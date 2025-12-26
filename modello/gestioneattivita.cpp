@@ -1,5 +1,6 @@
 #include "gestioneattivita.h"
 #include "attivita.h"
+#include "interfaccia_repo.h"
 
 void GestioneAttivita::aggiungi(std::unique_ptr<Attivita> attivita) {
     if (attivita)
@@ -20,4 +21,12 @@ Attivita* GestioneAttivita::attivita(int indice) const {
 
 int GestioneAttivita::numeroAttivita() const {
     return static_cast<int>(m_attivita.size());
+}
+
+void GestioneAttivita::carica(InterfacciaRepo& repo) {
+    m_attivita = repo.carica();
+}
+
+void GestioneAttivita::salva(InterfacciaRepo& repo) const {
+    repo.salva(m_attivita);
 }

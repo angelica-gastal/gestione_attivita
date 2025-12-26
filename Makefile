@@ -58,14 +58,18 @@ SOURCES       = main.cpp \
 		modello/lavoro.cpp \
 		modello/personale.cpp \
 		modello/sociale.cpp \
-		modello/visitamedica.cpp 
+		modello/visitamedica.cpp \
+		modello/attivitafactory.cpp \
+		modello/jsonrepo.cpp 
 OBJECTS       = main.o \
 		attivita.o \
 		gestioneattivita.o \
 		lavoro.o \
 		personale.o \
 		sociale.o \
-		visitamedica.o
+		visitamedica.o \
+		attivitafactory.o \
+		jsonrepo.o
 DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/common/unix.conf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/common/linux.conf \
@@ -170,13 +174,18 @@ DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		modello/lavoro.h \
 		modello/personale.h \
 		modello/sociale.h \
-		modello/visitamedica.h main.cpp \
+		modello/visitamedica.h \
+		modello/attivitafactory.h \
+		modello/interfaccia_repo.h \
+		modello/jsonrepo.h main.cpp \
 		modello/attivita.cpp \
 		modello/gestioneattivita.cpp \
 		modello/lavoro.cpp \
 		modello/personale.cpp \
 		modello/sociale.cpp \
-		modello/visitamedica.cpp
+		modello/visitamedica.cpp \
+		modello/attivitafactory.cpp \
+		modello/jsonrepo.cpp
 QMAKE_TARGET  = gestione_attivita
 DESTDIR       = 
 TARGET        = gestione_attivita
@@ -408,8 +417,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h modello/personale.h modello/sociale.h modello/visitamedica.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp modello/personale.cpp modello/sociale.cpp modello/visitamedica.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h modello/personale.h modello/sociale.h modello/visitamedica.h modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp modello/personale.cpp modello/sociale.cpp modello/visitamedica.cpp modello/attivitafactory.cpp modello/jsonrepo.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -469,7 +478,8 @@ attivita.o: modello/attivita.cpp modello/attivita.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attivita.o modello/attivita.cpp
 
 gestioneattivita.o: modello/gestioneattivita.cpp modello/gestioneattivita.h \
-		modello/attivita.h
+		modello/attivita.h \
+		modello/interfaccia_repo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gestioneattivita.o modello/gestioneattivita.cpp
 
 lavoro.o: modello/lavoro.cpp modello/lavoro.h \
@@ -487,6 +497,24 @@ sociale.o: modello/sociale.cpp modello/sociale.h \
 visitamedica.o: modello/visitamedica.cpp modello/visitamedica.h \
 		modello/attivita.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o visitamedica.o modello/visitamedica.cpp
+
+attivitafactory.o: modello/attivitafactory.cpp modello/attivitafactory.h \
+		modello/lavoro.h \
+		modello/attivita.h \
+		modello/personale.h \
+		modello/sociale.h \
+		modello/visitamedica.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attivitafactory.o modello/attivitafactory.cpp
+
+jsonrepo.o: modello/jsonrepo.cpp modello/jsonrepo.h \
+		modello/interfaccia_repo.h \
+		modello/attivitafactory.h \
+		modello/lavoro.h \
+		modello/attivita.h \
+		modello/personale.h \
+		modello/sociale.h \
+		modello/visitamedica.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o jsonrepo.o modello/jsonrepo.cpp
 
 ####### Install
 

@@ -17,11 +17,14 @@ QT += core
 
 # Input
 HEADERS += modello/attivita.h modello/gestioneattivita.h modello/lavoro.h \
-           modello/personale.h modello/sociale.h modello/visitamedica.h
+           modello/personale.h modello/sociale.h modello/visitamedica.h \
+           modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h
 SOURCES += main.cpp \
            modello/attivita.cpp \
            modello/gestioneattivita.cpp \
            modello/lavoro.cpp \
            modello/personale.cpp \
            modello/sociale.cpp \
-           modello/visitamedica.cpp
+           modello/visitamedica.cpp \
+           modello/attivitafactory.cpp \
+           modello/jsonrepo.cpp

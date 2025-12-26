@@ -4,7 +4,8 @@
 #include <vector>
 #include <memory>
 
-class Attivita;   
+class Attivita;
+class InterfacciaRepo;
 
 class GestioneAttivita {
 public:
@@ -17,6 +18,9 @@ public:
     Attivita* attivita(int indice) const;
 
     int numeroAttivita() const;
+
+    void carica(InterfacciaRepo& repo);
+    void salva(InterfacciaRepo& repo) const;
 
 private:
     std::vector<std::unique_ptr<Attivita>> m_attivita;
