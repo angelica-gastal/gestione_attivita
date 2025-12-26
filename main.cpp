@@ -1,8 +1,12 @@
 #include "modello/gestioneattivita.h"
 #include "modello/lavoro.h"
+#include "modello/personale.h"
+#include "modello/sociale.h"
+#include "modello/visitamedica.h"
 #include <QDebug>
 
-int main() {
+int main()
+{
     GestioneAttivita gestione;
 
     gestione.aggiungi(
@@ -11,10 +15,33 @@ int main() {
             "Sprint planning",
             QDate::currentDate(),
             QTime::currentTime(),
-            Lavoro::Priorita::Alta
-        )
-    );
+            Lavoro::Priorita::Alta));
+    gestione.aggiungi(std::make_unique<Personale>(
+        "Allenamento",
+        "Palestra",
+        QDate::currentDate(),
+        QTime::currentTime(),
+        Personale::Categoria::Sport,
+        1, 30));
 
-    qDebug() << gestione.numeroAttivita();
-    qDebug() << gestione.attivita(0)->tipo();
+    gestione.aggiungi(std::make_unique<Sociale>(
+        "Cena",
+        "Pizza",
+        QDate::currentDate(),
+        QTime::currentTime(),
+        "Ristorante",
+        "Amici"));
+
+    gestione.aggiungi(std::make_unique<VisitaMedica>(
+        "Controllo",
+        "Annuale",
+        QDate::currentDate(),
+        QTime::currentTime(),
+        "Dr. Rossi",
+        "Cardiologica"));
+
+    for (int i = 0; i < gestione.numeroAttivita(); ++i)
+    {
+        qDebug() << gestione.attivita(i)->tipo();
+    }
 }

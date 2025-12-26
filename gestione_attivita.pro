@@ -16,8 +16,12 @@ INCLUDEPATH += .
 QT += core
 
 # Input
-HEADERS += modello/attivita.h modello/gestioneattivita.h modello/lavoro.h
+HEADERS += modello/attivita.h modello/gestioneattivita.h modello/lavoro.h \
+           modello/personale.h modello/sociale.h modello/visitamedica.h
 SOURCES += main.cpp \
            modello/attivita.cpp \
            modello/gestioneattivita.cpp \
-           modello/lavoro.cpp
+           modello/lavoro.cpp \
+           modello/personale.cpp \
+           modello/sociale.cpp \
+           modello/visitamedica.cpp

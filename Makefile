@@ -55,11 +55,17 @@ OBJECTS_DIR   = ./
 SOURCES       = main.cpp \
 		modello/attivita.cpp \
 		modello/gestioneattivita.cpp \
-		modello/lavoro.cpp 
+		modello/lavoro.cpp \
+		modello/personale.cpp \
+		modello/sociale.cpp \
+		modello/visitamedica.cpp 
 OBJECTS       = main.o \
 		attivita.o \
 		gestioneattivita.o \
-		lavoro.o
+		lavoro.o \
+		personale.o \
+		sociale.o \
+		visitamedica.o
 DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/common/unix.conf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/common/linux.conf \
@@ -161,10 +167,16 @@ DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/lex.prf \
 		gestione_attivita.pro modello/attivita.h \
 		modello/gestioneattivita.h \
-		modello/lavoro.h main.cpp \
+		modello/lavoro.h \
+		modello/personale.h \
+		modello/sociale.h \
+		modello/visitamedica.h main.cpp \
 		modello/attivita.cpp \
 		modello/gestioneattivita.cpp \
-		modello/lavoro.cpp
+		modello/lavoro.cpp \
+		modello/personale.cpp \
+		modello/sociale.cpp \
+		modello/visitamedica.cpp
 QMAKE_TARGET  = gestione_attivita
 DESTDIR       = 
 TARGET        = gestione_attivita
@@ -396,8 +408,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h modello/personale.h modello/sociale.h modello/visitamedica.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp modello/personale.cpp modello/sociale.cpp modello/visitamedica.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -447,7 +459,10 @@ compiler_clean: compiler_moc_predefs_clean
 
 main.o: main.cpp modello/gestioneattivita.h \
 		modello/lavoro.h \
-		modello/attivita.h
+		modello/attivita.h \
+		modello/personale.h \
+		modello/sociale.h \
+		modello/visitamedica.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 attivita.o: modello/attivita.cpp modello/attivita.h
@@ -460,6 +475,18 @@ gestioneattivita.o: modello/gestioneattivita.cpp modello/gestioneattivita.h \
 lavoro.o: modello/lavoro.cpp modello/lavoro.h \
 		modello/attivita.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lavoro.o modello/lavoro.cpp
+
+personale.o: modello/personale.cpp modello/personale.h \
+		modello/attivita.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o personale.o modello/personale.cpp
+
+sociale.o: modello/sociale.cpp modello/sociale.h \
+		modello/attivita.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sociale.o modello/sociale.cpp
+
+visitamedica.o: modello/visitamedica.cpp modello/visitamedica.h \
+		modello/attivita.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o visitamedica.o modello/visitamedica.cpp
 
 ####### Install
 
