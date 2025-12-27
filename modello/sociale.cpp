@@ -1,4 +1,5 @@
 #include "sociale.h"
+#include "attivitavisitor.h"
 
 Sociale::Sociale(const QString& titolo,
                  const QString& descrizione,
@@ -14,6 +15,10 @@ Sociale::Sociale(const QString& titolo,
 
 QString Sociale::tipo() const {
     return "Sociale";
+}
+
+void Sociale::accept(AttivitaVisitor* v) {
+    v->visit(this);
 }
 
 QString Sociale::luogo() const {

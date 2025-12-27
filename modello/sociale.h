@@ -3,6 +3,8 @@
 
 #include "attivita.h"
 
+class AttivitaVisitor;
+
 class Sociale : public Attivita {
 public:
     Sociale(const QString& titolo,
@@ -13,6 +15,7 @@ public:
             const QString& conChi = {});
 
     QString tipo() const override;
+    void accept(AttivitaVisitor* v) override;
 
     QString luogo() const;
     QString conChi() const;

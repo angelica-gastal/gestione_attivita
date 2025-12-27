@@ -3,6 +3,8 @@
 
 #include "attivita.h"
 
+class AttivitaVisitor;
+
 class VisitaMedica : public Attivita {
 public:
     VisitaMedica(const QString& titolo,
@@ -13,6 +15,7 @@ public:
                  const QString& tipoVisita);
 
     QString tipo() const override;
+    void accept(AttivitaVisitor* v) override;
 
     QString medico() const;
     QString tipoVisita() const;

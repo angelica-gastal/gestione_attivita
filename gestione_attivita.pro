@@ -13,12 +13,15 @@ INCLUDEPATH += .
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+QT += widgets
 QT += core
 
 # Input
 HEADERS += modello/attivita.h modello/gestioneattivita.h modello/lavoro.h \
            modello/personale.h modello/sociale.h modello/visitamedica.h \
-           modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h
+           modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h \
+           modello/attivitavisitor.h \
+           gui/mainwindow.h
 SOURCES += main.cpp \
            modello/attivita.cpp \
            modello/gestioneattivita.cpp \
@@ -27,4 +30,5 @@ SOURCES += main.cpp \
            modello/sociale.cpp \
            modello/visitamedica.cpp \
            modello/attivitafactory.cpp \
-           modello/jsonrepo.cpp
+           modello/jsonrepo.cpp \
+           gui/mainwindow.cpp

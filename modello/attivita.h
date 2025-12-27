@@ -4,6 +4,7 @@
 #include <QString>
 #include <QDate>
 #include <QTime>
+#include "attivitavisitor.h"
 
 class Attivita {
 public:
@@ -23,6 +24,7 @@ public:
     void setDescrizione(const QString& d);
 
     virtual QString tipo() const = 0;
+    virtual void accept(AttivitaVisitor* v) = 0;
 
 protected:
     QString m_titolo; //membri m_

@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT $(DEFINES)
 CXXFLAGS      = -pipe -O2 -Wall -Wextra -D_REENTRANT $(DEFINES)
-INCPATH       = -I. -I. -I/usr/include/aarch64-linux-gnu/qt6 -I/usr/include/aarch64-linux-gnu/qt6/QtGui -I/usr/include/aarch64-linux-gnu/qt6/QtCore -I. -I/usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++
+INCPATH       = -I. -I. -I/usr/include/aarch64-linux-gnu/qt6 -I/usr/include/aarch64-linux-gnu/qt6/QtWidgets -I/usr/include/aarch64-linux-gnu/qt6/QtGui -I/usr/include/aarch64-linux-gnu/qt6/QtCore -I. -I/usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake6
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = gestione_attivita1.0.0
 DISTDIR = /home/student/workspace/.tmp/gestione_attivita1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath-link,/usr/lib/aarch64-linux-gnu
-LIBS          = $(SUBLIBS) /usr/lib/aarch64-linux-gnu/libQt6Gui.so /usr/lib/aarch64-linux-gnu/libGLX.so /usr/lib/aarch64-linux-gnu/libOpenGL.so /usr/lib/aarch64-linux-gnu/libQt6Core.so -lpthread -lGLX -lOpenGL   
+LIBS          = $(SUBLIBS) /usr/lib/aarch64-linux-gnu/libQt6Widgets.so /usr/lib/aarch64-linux-gnu/libQt6Gui.so /usr/lib/aarch64-linux-gnu/libGLX.so /usr/lib/aarch64-linux-gnu/libOpenGL.so /usr/lib/aarch64-linux-gnu/libQt6Core.so -lpthread -lGLX -lOpenGL   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -60,7 +60,8 @@ SOURCES       = main.cpp \
 		modello/sociale.cpp \
 		modello/visitamedica.cpp \
 		modello/attivitafactory.cpp \
-		modello/jsonrepo.cpp 
+		modello/jsonrepo.cpp \
+		gui/mainwindow.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		attivita.o \
 		gestioneattivita.o \
@@ -69,7 +70,9 @@ OBJECTS       = main.o \
 		sociale.o \
 		visitamedica.o \
 		attivitafactory.o \
-		jsonrepo.o
+		jsonrepo.o \
+		mainwindow.o \
+		moc_mainwindow.o
 DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/common/unix.conf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/common/linux.conf \
@@ -162,6 +165,7 @@ DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/resources.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/moc.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/unix/opengl.prf \
+		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/uic.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/unix/thread.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/qmake_use.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/file_copies.prf \
@@ -177,7 +181,9 @@ DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		modello/visitamedica.h \
 		modello/attivitafactory.h \
 		modello/interfaccia_repo.h \
-		modello/jsonrepo.h main.cpp \
+		modello/jsonrepo.h \
+		modello/attivitavisitor.h \
+		gui/mainwindow.h main.cpp \
 		modello/attivita.cpp \
 		modello/gestioneattivita.cpp \
 		modello/lavoro.cpp \
@@ -185,7 +191,8 @@ DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		modello/sociale.cpp \
 		modello/visitamedica.cpp \
 		modello/attivitafactory.cpp \
-		modello/jsonrepo.cpp
+		modello/jsonrepo.cpp \
+		gui/mainwindow.cpp
 QMAKE_TARGET  = gestione_attivita
 DESTDIR       = 
 TARGET        = gestione_attivita
@@ -289,6 +296,7 @@ Makefile: gestione_attivita.pro /usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/resources.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/moc.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/unix/opengl.prf \
+		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/uic.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/unix/thread.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/qmake_use.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/file_copies.prf \
@@ -297,6 +305,7 @@ Makefile: gestione_attivita.pro /usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/yacc.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/lex.prf \
 		gestione_attivita.pro \
+		/usr/lib/aarch64-linux-gnu/libQt6Widgets.prl \
 		/usr/lib/aarch64-linux-gnu/libQt6Gui.prl \
 		/usr/lib/aarch64-linux-gnu/libQt6Core.prl
 	$(QMAKE) -o Makefile gestione_attivita.pro
@@ -392,6 +401,7 @@ Makefile: gestione_attivita.pro /usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++
 /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/resources.prf:
 /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/moc.prf:
 /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/unix/opengl.prf:
+/usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/uic.prf:
 /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/unix/thread.prf:
 /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/qmake_use.prf:
 /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/file_copies.prf:
@@ -400,6 +410,7 @@ Makefile: gestione_attivita.pro /usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++
 /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/yacc.prf:
 /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/lex.prf:
 gestione_attivita.pro:
+/usr/lib/aarch64-linux-gnu/libQt6Widgets.prl:
 /usr/lib/aarch64-linux-gnu/libQt6Gui.prl:
 /usr/lib/aarch64-linux-gnu/libQt6Core.prl:
 qmake: FORCE
@@ -417,8 +428,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h modello/personale.h modello/sociale.h modello/visitamedica.h modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp modello/personale.cpp modello/sociale.cpp modello/visitamedica.cpp modello/attivitafactory.cpp modello/jsonrepo.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h modello/personale.h modello/sociale.h modello/visitamedica.h modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h modello/attivitavisitor.h gui/mainwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp modello/personale.cpp modello/sociale.cpp modello/visitamedica.cpp modello/attivitafactory.cpp modello/jsonrepo.cpp gui/mainwindow.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -450,57 +461,67 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_mainwindow.cpp
+moc_mainwindow.cpp: gui/mainwindow.h \
+		moc_predefs.h \
+		/usr/lib/qt6/libexec/moc
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/student/workspace/moc_predefs.h -I/usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/student/workspace -I/home/student/workspace -I/usr/include/aarch64-linux-gnu/qt6 -I/usr/include/aarch64-linux-gnu/qt6/QtWidgets -I/usr/include/aarch64-linux-gnu/qt6/QtGui -I/usr/include/aarch64-linux-gnu/qt6/QtCore -I/usr/include/c++/13 -I/usr/include/aarch64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/aarch64-linux-gnu/13/include -I/usr/local/include -I/usr/include/aarch64-linux-gnu -I/usr/include gui/mainwindow.h -o moc_mainwindow.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
+compiler_uic_make_all:
+compiler_uic_clean:
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
-main.o: main.cpp modello/gestioneattivita.h \
-		modello/lavoro.h \
-		modello/attivita.h \
-		modello/personale.h \
-		modello/sociale.h \
-		modello/visitamedica.h
+main.o: main.cpp gui/mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
-attivita.o: modello/attivita.cpp modello/attivita.h
+attivita.o: modello/attivita.cpp modello/attivita.h \
+		modello/attivitavisitor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attivita.o modello/attivita.cpp
 
 gestioneattivita.o: modello/gestioneattivita.cpp modello/gestioneattivita.h \
 		modello/attivita.h \
+		modello/attivitavisitor.h \
 		modello/interfaccia_repo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gestioneattivita.o modello/gestioneattivita.cpp
 
 lavoro.o: modello/lavoro.cpp modello/lavoro.h \
-		modello/attivita.h
+		modello/attivita.h \
+		modello/attivitavisitor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lavoro.o modello/lavoro.cpp
 
 personale.o: modello/personale.cpp modello/personale.h \
-		modello/attivita.h
+		modello/attivita.h \
+		modello/attivitavisitor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o personale.o modello/personale.cpp
 
 sociale.o: modello/sociale.cpp modello/sociale.h \
-		modello/attivita.h
+		modello/attivita.h \
+		modello/attivitavisitor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sociale.o modello/sociale.cpp
 
 visitamedica.o: modello/visitamedica.cpp modello/visitamedica.h \
-		modello/attivita.h
+		modello/attivita.h \
+		modello/attivitavisitor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o visitamedica.o modello/visitamedica.cpp
 
 attivitafactory.o: modello/attivitafactory.cpp modello/attivitafactory.h \
 		modello/lavoro.h \
 		modello/attivita.h \
+		modello/attivitavisitor.h \
 		modello/personale.h \
 		modello/sociale.h \
 		modello/visitamedica.h
@@ -511,10 +532,17 @@ jsonrepo.o: modello/jsonrepo.cpp modello/jsonrepo.h \
 		modello/attivitafactory.h \
 		modello/lavoro.h \
 		modello/attivita.h \
+		modello/attivitavisitor.h \
 		modello/personale.h \
 		modello/sociale.h \
 		modello/visitamedica.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o jsonrepo.o modello/jsonrepo.cpp
+
+mainwindow.o: gui/mainwindow.cpp gui/mainwindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o gui/mainwindow.cpp
+
+moc_mainwindow.o: moc_mainwindow.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
 
 ####### Install
 

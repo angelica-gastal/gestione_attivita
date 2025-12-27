@@ -1,4 +1,5 @@
 #include "lavoro.h"
+#include "attivitavisitor.h"
 
 Lavoro::Lavoro(const QString& titolo,
                const QString& descrizione,
@@ -12,6 +13,10 @@ Lavoro::Lavoro(const QString& titolo,
 
 QString Lavoro::tipo() const {
     return "Lavoro";
+}
+
+void Lavoro::accept(AttivitaVisitor* v) {
+    v->visit(this);
 }
 
 Lavoro::Priorita Lavoro::priorita() const {

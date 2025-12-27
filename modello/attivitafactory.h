@@ -49,6 +49,8 @@ public:
         const QString& medico,
         const QString& tipoVisita
     );
+
+    virtual void accept(AttivitaVisitor* v) = 0;
 };
 
 #endif

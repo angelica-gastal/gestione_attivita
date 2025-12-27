@@ -1,4 +1,5 @@
 #include "personale.h"
+#include "attivitavisitor.h"
 
 Personale::Personale(const QString& titolo,
                      const QString& descrizione,
@@ -16,6 +17,10 @@ Personale::Personale(const QString& titolo,
 
 QString Personale::tipo() const {
     return "Personale";
+}
+
+void Personale::accept(AttivitaVisitor* v) {
+    v->visit(this);
 }
 
 Personale::Categoria Personale::categoria() const {

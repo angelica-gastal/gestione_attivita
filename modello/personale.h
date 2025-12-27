@@ -3,6 +3,8 @@
 
 #include "attivita.h"
 
+class AttivitaVisitor;
+
 class Personale : public Attivita {
 public:
     enum class Categoria { Casa, Hobby, Sport, Commissioni };
@@ -16,6 +18,7 @@ public:
               int minuti = 0);
 
     QString tipo() const override;
+    void accept(AttivitaVisitor* v) override;
 
     Categoria categoria() const;
     int orePreviste() const;

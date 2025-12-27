@@ -1,4 +1,5 @@
 #include "visitamedica.h"
+#include "attivitavisitor.h"
 
 VisitaMedica::VisitaMedica(const QString& titolo,
                            const QString& descrizione,
@@ -14,6 +15,10 @@ VisitaMedica::VisitaMedica(const QString& titolo,
 
 QString VisitaMedica::tipo() const {
     return "Visita Medica";
+}
+
+void VisitaMedica::accept(AttivitaVisitor* v) {
+    v->visit(this);
 }
 
 QString VisitaMedica::medico() const {

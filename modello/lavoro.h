@@ -3,6 +3,8 @@
 
 #include "attivita.h"
 
+class AttivitaVisitor;
+
 class Lavoro: public Attivita {
 public:
     enum class Priorita { Alta, Media, Bassa };
@@ -14,6 +16,7 @@ public:
                  Priorita priorita);
 
     QString tipo() const override;
+    void accept(AttivitaVisitor* v) override;
 
     Priorita priorita() const;
 
