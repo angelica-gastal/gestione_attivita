@@ -2,14 +2,25 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTableView>
+#include "modello/gestioneattivita_observer.h"
+#include "modello/attivita_table.h"
+#include "modello/gestioneattivita.h"
 
-class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow, public GestioneAttivitaObserver
 {
     Q_OBJECT
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    // Observer methods
+    void onAttivitaAggiunta() override;
+    void onAttivitaRimossa() override;
+    void onAttivitaModificata() override;
+    void onDatiCaricati() override;
+
+private:
 private slots:
     void onNewFile();
     void onOpenFile();
@@ -24,6 +35,11 @@ private slots:
 private:
     void createMenus();
     void createToolbar();
+
+private:
+    GestioneAttivita* repo;
+    QTableView* table;
+    AttivitaTableModel* tableModel;
 };
 
 #endif

@@ -3,9 +3,11 @@
 
 #include <vector>
 #include <memory>
+#include <list>
 
 class Attivita;
 class InterfacciaRepo;
+class GestioneAttivitaObserver;
 
 class GestioneAttivita {
 public:
@@ -22,8 +24,19 @@ public:
     void carica(InterfacciaRepo& repo);
     void salva(InterfacciaRepo& repo) const;
 
+    // Notifica modifiche effettuate sulle attività esistenti (es. edit in-place)
+    void segnalaModifica();
+
+    // Observer pattern methods
+    void osservatore(GestioneAttivitaObserver* observer);
+    void rimuoviOsservatore(GestioneAttivitaObserver* observer);
+
+private:
+    void notificaOsservatori(void (GestioneAttivitaObserver::*)());
+
 private:
     std::vector<std::unique_ptr<Attivita>> m_attivita;
+    std::list<GestioneAttivitaObserver*> m_osservatori;
 };
 
 #endif

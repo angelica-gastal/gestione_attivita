@@ -20,7 +20,8 @@ QT += core
 HEADERS += modello/attivita.h modello/gestioneattivita.h modello/lavoro.h \
            modello/personale.h modello/sociale.h modello/visitamedica.h \
            modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h \
-           modello/attivitavisitor.h \
+           modello/attivitavisitor.h modello/gestioneattivita_observer.h \
+           modello/attivita_table.h \
            gui/mainwindow.h
 SOURCES += main.cpp \
            modello/attivita.cpp \
@@ -31,4 +32,5 @@ SOURCES += main.cpp \
            modello/visitamedica.cpp \
            modello/attivitafactory.cpp \
            modello/jsonrepo.cpp \
+           modello/attivita_table.cpp \
            gui/mainwindow.cpp
