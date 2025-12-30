@@ -29,7 +29,11 @@ MainWindow::MainWindow(QWidget *parent)
     table->setModel(tableModel);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
-    table->horizontalHeader()->setStretchLastSection(true);
+    table->horizontalHeader()->setStretchLastSection(false);
+    table->setColumnWidth(0, 100); // Tipo
+    table->setColumnWidth(1, 250); // Titolo
+    table->setColumnWidth(2, 120); // Data
+    table->setColumnWidth(3, 80);  // Ora
 
     // Registriamo anche questa finestra per mostrare messaggi di stato
     repo->osservatore(this);

@@ -17,7 +17,7 @@ int AttivitaTableModel::rowCount(const QModelIndex&) const {
 }
 
 int AttivitaTableModel::columnCount(const QModelIndex&) const {
-    return 3; 
+    return 4; // Tipo, Titolo, Data, Ora
 }
 
 QVariant AttivitaTableModel::data(const QModelIndex& index, int role) const {
@@ -31,6 +31,7 @@ QVariant AttivitaTableModel::data(const QModelIndex& index, int role) const {
         case 0: return a->tipo();
         case 1: return a->titolo();
         case 2: return a->data().toString("dd/MM/yyyy");
+        case 3: return a->ora().toString("HH:mm");
     }
     return {};
 }
@@ -41,6 +42,7 @@ QVariant AttivitaTableModel::headerData(int section, Qt::Orientation o, int role
             case 0: return "Tipo";
             case 1: return "Titolo";
             case 2: return "Data";
+            case 3: return "Ora";
         }
     }
     return {};
