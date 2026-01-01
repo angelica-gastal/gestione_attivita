@@ -1,5 +1,9 @@
 #include "attivitaform.h"
 #include "mainwindow.h"
+#include "filemanager.h"
+#include "pannellodettagli.h"
+#include "menutoolbarmanager.h"
+#include "attivitacontroller.h"
 #include <QMenuBar>
 #include <QToolBar>
 #include <QAction>
@@ -14,6 +18,8 @@
 #include <QTime>
 #include <memory>
 #include <QStackedWidget>
+#include <QMessageBox>
+#include <QSplitter>
 
 #include "modello/gestioneattivita.h"
 #include "modello/attivita.h"
@@ -32,15 +38,19 @@ MainWindow::MainWindow(QWidget *parent)
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->horizontalHeader()->setStretchLastSection(false);
-    table->setColumnWidth(0, 150);
-    table->setColumnWidth(1, 450);
+    table->setColumnWidth(0, 100);
+    table->setColumnWidth(1, 250);
     table->setColumnWidth(2, 180);
-    table->setColumnWidth(3, 113);
+    table->setColumnWidth(3, 115);
 
     repo->osservatore(this);
 
+    fileManager = new FileManager(repo, this);
+
+    createMainPage();
+
     stack = new QStackedWidget(this);
-    stack->addWidget(table);
+    stack->addWidget(mainPage);
 
     // Form polimorfo
     form = new AttivitaForm(this);
@@ -48,17 +58,43 @@ MainWindow::MainWindow(QWidget *parent)
 
     setCentralWidget(stack);
 
+    // Controllers
+    menuToolbarManager = new MenuToolbarManager(this);
+    menuToolbarManager->createMenus();
+    menuToolbarManager->createToolbar();
+
+    attivitaController = new AttivitaController(repo, table, stack, form, mainPage, 
+                                                 pannelloDettagli, statusBar(), this);
+
+    // Collegamenti menu/toolbar -> file operations
+    connect(menuToolbarManager, &MenuToolbarManager::newFileRequested, this, &MainWindow::onNewFile);
+    connect(menuToolbarManager, &MenuToolbarManager::openFileRequested, this, &MainWindow::onOpenFile);
+    connect(menuToolbarManager, &MenuToolbarManager::saveFileRequested, this, &MainWindow::onSaveFile);
+    connect(menuToolbarManager, &MenuToolbarManager::saveAsFileRequested, this, &MainWindow::onSaveAsFile);
+    connect(menuToolbarManager, &MenuToolbarManager::exitRequested, this, &MainWindow::onExit);
+
+    // Collegamenti menu/toolbar -> attività operations
+    connect(menuToolbarManager, &MenuToolbarManager::newAttivitaRequested, attivitaController, &AttivitaController::onNewAttivita);
+    connect(menuToolbarManager, &MenuToolbarManager::editAttivitaRequested, attivitaController, &AttivitaController::onEditAttivita);
+    connect(menuToolbarManager, &MenuToolbarManager::deleteAttivitaRequested, attivitaController, &AttivitaController::onDeleteAttivita);
+    connect(menuToolbarManager, &MenuToolbarManager::viewAttivitaRequested, attivitaController, &AttivitaController::onViewAttivita);
+
+    // Form signals
     connect(form, &AttivitaForm::saved, this, [this](Attivita* obj, int /*index*/) {
         std::unique_ptr<Attivita> ptr(obj);
         repo->aggiungi(std::move(ptr));
-        stack->setCurrentWidget(table);
+        stack->setCurrentWidget(mainPage);
     });
     connect(form, &AttivitaForm::cancelled, this, [this]{
-        stack->setCurrentWidget(table);
+        stack->setCurrentWidget(mainPage);
     });
 
-    createMenus();
-    createToolbar();
+    // Table interactions
+    connect(table, &QTableView::doubleClicked, attivitaController, &AttivitaController::onViewAttivita);
+    connect(table->selectionModel(), &QItemSelectionModel::currentChanged, this, [this](const QModelIndex& current){
+        pannelloDettagli->mostraDettagli(current.isValid() ? repo->attivita(current.row()) : nullptr);
+    });
+
     setWindowTitle("Gestione Attività");
     resize(900,600);
     statusBar()->showMessage("Pronto");
@@ -69,85 +105,51 @@ MainWindow::~MainWindow() {
     delete repo;
 }
 
-void MainWindow::createMenus()
-{
-    QMenu *fileMenu = menuBar()->addMenu("File");
-    QAction *newAct = fileMenu->addAction("Nuovo");
-    QAction *openAct = fileMenu->addAction("Apri");
-    QAction *saveAct = fileMenu->addAction("Salva");
-    QAction *saveAsAct = fileMenu->addAction("Salva come");
-    fileMenu->addSeparator();
-    QAction *exitAct = fileMenu->addAction("Esci");
+void MainWindow::createMainPage() {
+    mainPage = new QWidget(this);
+    QHBoxLayout* h = new QHBoxLayout(mainPage);
 
-    connect(newAct, &QAction::triggered, this, &MainWindow::onNewFile);
-    connect(openAct, &QAction::triggered, this, &MainWindow::onOpenFile);
-    connect(saveAct, &QAction::triggered, this, &MainWindow::onSaveFile);
-    connect(saveAsAct, &QAction::triggered, this, &MainWindow::onSaveAsFile);
-    connect(exitAct, &QAction::triggered, this, &MainWindow::onExit);
+    QSplitter* splitter = new QSplitter(mainPage);
+    splitter->setOrientation(Qt::Horizontal);
 
-    QMenu *attivitaMenu = menuBar()->addMenu("Attività");
-    QAction *newAtt = attivitaMenu->addAction("Nuova");
-    QAction *editAtt = attivitaMenu->addAction("Modifica");
-    QAction *deleteAtt = attivitaMenu->addAction("Elimina");
+    splitter->addWidget(table);
 
-    connect(newAtt, &QAction::triggered, this, &MainWindow::onNewAttivita);
-    connect(editAtt, &QAction::triggered, this, &MainWindow::onEditAttivita);
-    connect(deleteAtt, &QAction::triggered, this, &MainWindow::onDeleteAttivita);
-}
+    pannelloDettagli = new PannelloDettagli(splitter);
+    splitter->addWidget(pannelloDettagli);
 
-void MainWindow::createToolbar()
-{
-    QToolBar *tb = addToolBar("Main");
-    QAction *newAct = new QAction("Nuovo file");
-    QAction *openAct = new QAction("Apri");
-    QAction *saveAct = new QAction("Salva");
-    QAction *newAtt = new QAction("Nuova Attività");
+    splitter->setStretchFactor(0, 3);
+    splitter->setStretchFactor(1, 2);
 
-    tb->addAction(newAct);
-    tb->addAction(openAct);
-    tb->addAction(saveAct);
-    tb->addSeparator();
-    tb->addAction(newAtt);
-
-    connect(newAct, &QAction::triggered, this, &MainWindow::onNewFile);
-    connect(openAct, &QAction::triggered, this, &MainWindow::onOpenFile);
-    connect(saveAct, &QAction::triggered, this, &MainWindow::onSaveFile);
-    connect(newAtt, &QAction::triggered, this, &MainWindow::onNewAttivita);
-}
-
-void MainWindow::onNewAttivita() {
-    stack->setCurrentWidget(form);
-    form->loadForCreate();
-}
-
-void MainWindow::onEditAttivita() {
-    QModelIndex idx = table->currentIndex();
-    if (!idx.isValid()) {
-        statusBar()->showMessage("Nessuna attività selezionata", 2000);
-        return;
-    }
-
-    int row = idx.row();
-    Attivita* att = repo->attivita(row);
-    stack->setCurrentWidget(form);
-    form->loadForEdit(row, att);
-}
-
-void MainWindow::onDeleteAttivita() {
-    QModelIndex idx = table->currentIndex();
-    if (!idx.isValid()) {
-        statusBar()->showMessage("Nessuna attività selezionata", 2000);
-        return;
-    }
-    repo->rimuovi(idx.row());
+    h->addWidget(splitter);
+    mainPage->setLayout(h);
 }
 
 // ---- SLOT -----
-void MainWindow::onNewFile()     { statusBar()->showMessage("Nuovo file", 2000); }
-void MainWindow::onOpenFile()    { statusBar()->showMessage("Apri file", 2000); }
-void MainWindow::onSaveFile()    { statusBar()->showMessage("Salva file", 2000); }
-void MainWindow::onSaveAsFile()  { statusBar()->showMessage("Salva come", 2000); }
-void MainWindow::onExit()        { qApp->quit(); }
+void MainWindow::onNewFile() {
+    fileManager->nuovoFile();
+    statusBar()->showMessage("Nuovo file creato", 2000);
+}
+
+void MainWindow::onOpenFile() {
+    fileManager->apriFile();
+    if (!fileManager->currentFilePath().isEmpty())
+        statusBar()->showMessage("File caricato: " + fileManager->currentFilePath(), 3000);
+}
+
+void MainWindow::onSaveFile() {
+    fileManager->salvaFile();
+    if (!fileManager->currentFilePath().isEmpty())
+        statusBar()->showMessage("File salvato: " + fileManager->currentFilePath(), 3000);
+}
+
+void MainWindow::onSaveAsFile() {
+    fileManager->salvaComefile();
+    if (!fileManager->currentFilePath().isEmpty())
+        statusBar()->showMessage("File salvato: " + fileManager->currentFilePath(), 3000);
+}
+
+void MainWindow::onExit() { qApp->quit(); }
+
 void MainWindow::onAttivitaAggiunta() {
     statusBar()->showMessage("Attività aggiunta", 2000);
 }

@@ -24,7 +24,12 @@ HEADERS += modello/attivita.h modello/gestioneattivita.h modello/lavoro.h \
            modello/attivita_table.h \
            gui/mainwindow.h \
            gui/attivitaform.h \
-           gui/compilaformvisitor.h
+           gui/compilaformvisitor.h \
+           gui/dettaglioattivitavisitor.h \
+           gui/filemanager.h \
+           gui/pannellodettagli.h \
+           gui/menutoolbarmanager.h \
+           gui/attivitacontroller.h
 SOURCES += main.cpp \
            modello/attivita.cpp \
            modello/gestioneattivita.cpp \
@@ -37,4 +42,9 @@ SOURCES += main.cpp \
            modello/attivita_table.cpp \
            gui/mainwindow.cpp \
            gui/attivitaform.cpp \
-           gui/compilaformvisitor.cpp
+           gui/compilaformvisitor.cpp \
+           gui/dettaglioattivitavisitor.cpp \
+           gui/filemanager.cpp \
+           gui/pannellodettagli.cpp \
+           gui/menutoolbarmanager.cpp \
+           gui/attivitacontroller.cpp

@@ -64,9 +64,17 @@ SOURCES       = main.cpp \
 		modello/attivita_table.cpp \
 		gui/mainwindow.cpp \
 		gui/attivitaform.cpp \
-		gui/compilaformvisitor.cpp moc_attivita_table.cpp \
+		gui/compilaformvisitor.cpp \
+		gui/dettaglioattivitavisitor.cpp \
+		gui/filemanager.cpp \
+		gui/pannellodettagli.cpp \
+		gui/menutoolbarmanager.cpp \
+		gui/attivitacontroller.cpp moc_attivita_table.cpp \
 		moc_mainwindow.cpp \
-		moc_attivitaform.cpp
+		moc_attivitaform.cpp \
+		moc_pannellodettagli.cpp \
+		moc_menutoolbarmanager.cpp \
+		moc_attivitacontroller.cpp
 OBJECTS       = main.o \
 		attivita.o \
 		gestioneattivita.o \
@@ -80,9 +88,17 @@ OBJECTS       = main.o \
 		mainwindow.o \
 		attivitaform.o \
 		compilaformvisitor.o \
+		dettaglioattivitavisitor.o \
+		filemanager.o \
+		pannellodettagli.o \
+		menutoolbarmanager.o \
+		attivitacontroller.o \
 		moc_attivita_table.o \
 		moc_mainwindow.o \
-		moc_attivitaform.o
+		moc_attivitaform.o \
+		moc_pannellodettagli.o \
+		moc_menutoolbarmanager.o \
+		moc_attivitacontroller.o
 DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/common/unix.conf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/common/linux.conf \
@@ -197,7 +213,12 @@ DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		modello/attivita_table.h \
 		gui/mainwindow.h \
 		gui/attivitaform.h \
-		gui/compilaformvisitor.h main.cpp \
+		gui/compilaformvisitor.h \
+		gui/dettaglioattivitavisitor.h \
+		gui/filemanager.h \
+		gui/pannellodettagli.h \
+		gui/menutoolbarmanager.h \
+		gui/attivitacontroller.h main.cpp \
 		modello/attivita.cpp \
 		modello/gestioneattivita.cpp \
 		modello/lavoro.cpp \
@@ -209,7 +230,12 @@ DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		modello/attivita_table.cpp \
 		gui/mainwindow.cpp \
 		gui/attivitaform.cpp \
-		gui/compilaformvisitor.cpp
+		gui/compilaformvisitor.cpp \
+		gui/dettaglioattivitavisitor.cpp \
+		gui/filemanager.cpp \
+		gui/pannellodettagli.cpp \
+		gui/menutoolbarmanager.cpp \
+		gui/attivitacontroller.cpp
 QMAKE_TARGET  = gestione_attivita
 DESTDIR       = 
 TARGET        = gestione_attivita
@@ -445,8 +471,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h modello/personale.h modello/sociale.h modello/visitamedica.h modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h modello/attivitavisitor.h modello/gestioneattivita_observer.h modello/attivita_table.h gui/mainwindow.h gui/attivitaform.h gui/compilaformvisitor.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp modello/personale.cpp modello/sociale.cpp modello/visitamedica.cpp modello/attivitafactory.cpp modello/jsonrepo.cpp modello/attivita_table.cpp gui/mainwindow.cpp gui/attivitaform.cpp gui/compilaformvisitor.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h modello/personale.h modello/sociale.h modello/visitamedica.h modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h modello/attivitavisitor.h modello/gestioneattivita_observer.h modello/attivita_table.h gui/mainwindow.h gui/attivitaform.h gui/compilaformvisitor.h gui/dettaglioattivitavisitor.h gui/filemanager.h gui/pannellodettagli.h gui/menutoolbarmanager.h gui/attivitacontroller.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp modello/personale.cpp modello/sociale.cpp modello/visitamedica.cpp modello/attivitafactory.cpp modello/jsonrepo.cpp modello/attivita_table.cpp gui/mainwindow.cpp gui/attivitaform.cpp gui/compilaformvisitor.cpp gui/dettaglioattivitavisitor.cpp gui/filemanager.cpp gui/pannellodettagli.cpp gui/menutoolbarmanager.cpp gui/attivitacontroller.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -478,9 +504,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_attivita_table.cpp moc_mainwindow.cpp moc_attivitaform.cpp
+compiler_moc_header_make_all: moc_attivita_table.cpp moc_mainwindow.cpp moc_attivitaform.cpp moc_pannellodettagli.cpp moc_menutoolbarmanager.cpp moc_attivitacontroller.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_attivita_table.cpp moc_mainwindow.cpp moc_attivitaform.cpp
+	-$(DEL_FILE) moc_attivita_table.cpp moc_mainwindow.cpp moc_attivitaform.cpp moc_pannellodettagli.cpp moc_menutoolbarmanager.cpp moc_attivitacontroller.cpp
 moc_attivita_table.cpp: modello/attivita_table.h \
 		modello/gestioneattivita.h \
 		modello/gestioneattivita_observer.h \
@@ -496,8 +522,8 @@ moc_mainwindow.cpp: gui/mainwindow.h \
 		modello/attivitavisitor.h \
 		gui/compilaformvisitor.h \
 		gui/lavorouifactory.h \
-		modello/lavoro.h \
 		gui/attivitauifactory.h \
+		modello/lavoro.h \
 		gui/personaleuifactory.h \
 		modello/personale.h \
 		gui/socialeuifactory.h \
@@ -516,8 +542,8 @@ moc_attivitaform.cpp: gui/attivitaform.h \
 		modello/attivitavisitor.h \
 		gui/compilaformvisitor.h \
 		gui/lavorouifactory.h \
-		modello/lavoro.h \
 		gui/attivitauifactory.h \
+		modello/lavoro.h \
 		gui/personaleuifactory.h \
 		modello/personale.h \
 		gui/socialeuifactory.h \
@@ -527,6 +553,21 @@ moc_attivitaform.cpp: gui/attivitaform.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/student/workspace/moc_predefs.h -I/usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/student/workspace -I/home/student/workspace -I/usr/include/aarch64-linux-gnu/qt6 -I/usr/include/aarch64-linux-gnu/qt6/QtWidgets -I/usr/include/aarch64-linux-gnu/qt6/QtGui -I/usr/include/aarch64-linux-gnu/qt6/QtCore -I/usr/include/c++/13 -I/usr/include/aarch64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/aarch64-linux-gnu/13/include -I/usr/local/include -I/usr/include/aarch64-linux-gnu -I/usr/include gui/attivitaform.h -o moc_attivitaform.cpp
+
+moc_pannellodettagli.cpp: gui/pannellodettagli.h \
+		moc_predefs.h \
+		/usr/lib/qt6/libexec/moc
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/student/workspace/moc_predefs.h -I/usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/student/workspace -I/home/student/workspace -I/usr/include/aarch64-linux-gnu/qt6 -I/usr/include/aarch64-linux-gnu/qt6/QtWidgets -I/usr/include/aarch64-linux-gnu/qt6/QtGui -I/usr/include/aarch64-linux-gnu/qt6/QtCore -I/usr/include/c++/13 -I/usr/include/aarch64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/aarch64-linux-gnu/13/include -I/usr/local/include -I/usr/include/aarch64-linux-gnu -I/usr/include gui/pannellodettagli.h -o moc_pannellodettagli.cpp
+
+moc_menutoolbarmanager.cpp: gui/menutoolbarmanager.h \
+		moc_predefs.h \
+		/usr/lib/qt6/libexec/moc
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/student/workspace/moc_predefs.h -I/usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/student/workspace -I/home/student/workspace -I/usr/include/aarch64-linux-gnu/qt6 -I/usr/include/aarch64-linux-gnu/qt6/QtWidgets -I/usr/include/aarch64-linux-gnu/qt6/QtGui -I/usr/include/aarch64-linux-gnu/qt6/QtCore -I/usr/include/c++/13 -I/usr/include/aarch64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/aarch64-linux-gnu/13/include -I/usr/local/include -I/usr/include/aarch64-linux-gnu -I/usr/include gui/menutoolbarmanager.h -o moc_menutoolbarmanager.cpp
+
+moc_attivitacontroller.cpp: gui/attivitacontroller.h \
+		moc_predefs.h \
+		/usr/lib/qt6/libexec/moc
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/student/workspace/moc_predefs.h -I/usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/student/workspace -I/home/student/workspace -I/usr/include/aarch64-linux-gnu/qt6 -I/usr/include/aarch64-linux-gnu/qt6/QtWidgets -I/usr/include/aarch64-linux-gnu/qt6/QtGui -I/usr/include/aarch64-linux-gnu/qt6/QtCore -I/usr/include/c++/13 -I/usr/include/aarch64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/aarch64-linux-gnu/13/include -I/usr/local/include -I/usr/include/aarch64-linux-gnu -I/usr/include gui/attivitacontroller.h -o moc_attivitacontroller.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -550,8 +591,8 @@ main.o: main.cpp gui/mainwindow.h \
 		modello/attivitavisitor.h \
 		gui/compilaformvisitor.h \
 		gui/lavorouifactory.h \
-		modello/lavoro.h \
 		gui/attivitauifactory.h \
+		modello/lavoro.h \
 		gui/personaleuifactory.h \
 		modello/personale.h \
 		gui/socialeuifactory.h \
@@ -626,8 +667,8 @@ mainwindow.o: gui/mainwindow.cpp gui/attivitaform.h \
 		modello/attivitavisitor.h \
 		gui/compilaformvisitor.h \
 		gui/lavorouifactory.h \
-		modello/lavoro.h \
 		gui/attivitauifactory.h \
+		modello/lavoro.h \
 		gui/personaleuifactory.h \
 		modello/personale.h \
 		gui/socialeuifactory.h \
@@ -637,7 +678,11 @@ mainwindow.o: gui/mainwindow.cpp gui/attivitaform.h \
 		gui/mainwindow.h \
 		modello/gestioneattivita_observer.h \
 		modello/attivita_table.h \
-		modello/gestioneattivita.h
+		modello/gestioneattivita.h \
+		gui/filemanager.h \
+		gui/pannellodettagli.h \
+		gui/menutoolbarmanager.h \
+		gui/attivitacontroller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o gui/mainwindow.cpp
 
 attivitaform.o: gui/attivitaform.cpp gui/attivitaform.h \
@@ -645,8 +690,8 @@ attivitaform.o: gui/attivitaform.cpp gui/attivitaform.h \
 		modello/attivitavisitor.h \
 		gui/compilaformvisitor.h \
 		gui/lavorouifactory.h \
-		modello/lavoro.h \
 		gui/attivitauifactory.h \
+		modello/lavoro.h \
 		gui/personaleuifactory.h \
 		modello/personale.h \
 		gui/socialeuifactory.h \
@@ -660,8 +705,8 @@ compilaformvisitor.o: gui/compilaformvisitor.cpp gui/compilaformvisitor.h \
 		modello/attivita.h \
 		gui/attivitaform.h \
 		gui/lavorouifactory.h \
-		modello/lavoro.h \
 		gui/attivitauifactory.h \
+		modello/lavoro.h \
 		gui/personaleuifactory.h \
 		modello/personale.h \
 		gui/socialeuifactory.h \
@@ -669,6 +714,48 @@ compilaformvisitor.o: gui/compilaformvisitor.cpp gui/compilaformvisitor.h \
 		gui/visitamedicauifactory.h \
 		modello/visitamedica.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o compilaformvisitor.o gui/compilaformvisitor.cpp
+
+dettaglioattivitavisitor.o: gui/dettaglioattivitavisitor.cpp gui/dettaglioattivitavisitor.h \
+		modello/attivitavisitor.h \
+		modello/personale.h \
+		modello/attivita.h \
+		modello/sociale.h \
+		modello/lavoro.h \
+		modello/visitamedica.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dettaglioattivitavisitor.o gui/dettaglioattivitavisitor.cpp
+
+filemanager.o: gui/filemanager.cpp gui/filemanager.h \
+		modello/gestioneattivita.h \
+		modello/jsonrepo.h \
+		modello/interfaccia_repo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o filemanager.o gui/filemanager.cpp
+
+pannellodettagli.o: gui/pannellodettagli.cpp gui/pannellodettagli.h \
+		gui/dettaglioattivitavisitor.h \
+		modello/attivitavisitor.h \
+		modello/attivita.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pannellodettagli.o gui/pannellodettagli.cpp
+
+menutoolbarmanager.o: gui/menutoolbarmanager.cpp gui/menutoolbarmanager.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o menutoolbarmanager.o gui/menutoolbarmanager.cpp
+
+attivitacontroller.o: gui/attivitacontroller.cpp gui/attivitacontroller.h \
+		modello/gestioneattivita.h \
+		modello/attivita.h \
+		modello/attivitavisitor.h \
+		gui/pannellodettagli.h \
+		gui/attivitaform.h \
+		gui/compilaformvisitor.h \
+		gui/lavorouifactory.h \
+		gui/attivitauifactory.h \
+		modello/lavoro.h \
+		gui/personaleuifactory.h \
+		modello/personale.h \
+		gui/socialeuifactory.h \
+		modello/sociale.h \
+		gui/visitamedicauifactory.h \
+		modello/visitamedica.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attivitacontroller.o gui/attivitacontroller.cpp
 
 moc_attivita_table.o: moc_attivita_table.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_attivita_table.o moc_attivita_table.cpp
@@ -678,6 +765,15 @@ moc_mainwindow.o: moc_mainwindow.cpp
 
 moc_attivitaform.o: moc_attivitaform.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_attivitaform.o moc_attivitaform.cpp
+
+moc_pannellodettagli.o: moc_pannellodettagli.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_pannellodettagli.o moc_pannellodettagli.cpp
+
+moc_menutoolbarmanager.o: moc_menutoolbarmanager.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_menutoolbarmanager.o moc_menutoolbarmanager.cpp
+
+moc_attivitacontroller.o: moc_attivitacontroller.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_attivitacontroller.o moc_attivitacontroller.cpp
 
 ####### Install
 

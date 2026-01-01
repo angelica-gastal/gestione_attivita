@@ -9,6 +9,12 @@
 #include "modello/attivita_table.h"
 #include "modello/gestioneattivita.h"
 
+class AttivitaForm;
+class FileManager;
+class PannelloDettagli;
+class MenuToolbarManager;
+class AttivitaController;
+
 class MainWindow : public QMainWindow, public GestioneAttivitaObserver
 {
     Q_OBJECT
@@ -29,14 +35,8 @@ private slots:
     void onSaveFile();
     void onSaveAsFile();
     void onExit();
-
-    void onNewAttivita();
-    void onEditAttivita();
-    void onDeleteAttivita();
-
 private:
-    void createMenus();
-    void createToolbar();
+    void createMainPage();
 
 private:
     GestioneAttivita* repo;
@@ -44,6 +44,11 @@ private:
     AttivitaTableModel* tableModel;
     AttivitaForm* form;
     QStackedWidget* stack;
+    QWidget* mainPage;
+    FileManager* fileManager;
+    PannelloDettagli* pannelloDettagli;
+    MenuToolbarManager* menuToolbarManager;
+    AttivitaController* attivitaController;
 };
 
 #endif
