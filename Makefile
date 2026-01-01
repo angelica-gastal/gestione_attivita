@@ -62,8 +62,11 @@ SOURCES       = main.cpp \
 		modello/attivitafactory.cpp \
 		modello/jsonrepo.cpp \
 		modello/attivita_table.cpp \
-		gui/mainwindow.cpp moc_attivita_table.cpp \
-		moc_mainwindow.cpp
+		gui/mainwindow.cpp \
+		gui/attivitaform.cpp \
+		gui/compilaformvisitor.cpp moc_attivita_table.cpp \
+		moc_mainwindow.cpp \
+		moc_attivitaform.cpp
 OBJECTS       = main.o \
 		attivita.o \
 		gestioneattivita.o \
@@ -75,8 +78,11 @@ OBJECTS       = main.o \
 		jsonrepo.o \
 		attivita_table.o \
 		mainwindow.o \
+		attivitaform.o \
+		compilaformvisitor.o \
 		moc_attivita_table.o \
-		moc_mainwindow.o
+		moc_mainwindow.o \
+		moc_attivitaform.o
 DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/common/unix.conf \
 		/usr/lib/aarch64-linux-gnu/qt6/mkspecs/common/linux.conf \
@@ -189,7 +195,9 @@ DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		modello/attivitavisitor.h \
 		modello/gestioneattivita_observer.h \
 		modello/attivita_table.h \
-		gui/mainwindow.h main.cpp \
+		gui/mainwindow.h \
+		gui/attivitaform.h \
+		gui/compilaformvisitor.h main.cpp \
 		modello/attivita.cpp \
 		modello/gestioneattivita.cpp \
 		modello/lavoro.cpp \
@@ -199,7 +207,9 @@ DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		modello/attivitafactory.cpp \
 		modello/jsonrepo.cpp \
 		modello/attivita_table.cpp \
-		gui/mainwindow.cpp
+		gui/mainwindow.cpp \
+		gui/attivitaform.cpp \
+		gui/compilaformvisitor.cpp
 QMAKE_TARGET  = gestione_attivita
 DESTDIR       = 
 TARGET        = gestione_attivita
@@ -435,8 +445,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h modello/personale.h modello/sociale.h modello/visitamedica.h modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h modello/attivitavisitor.h modello/gestioneattivita_observer.h modello/attivita_table.h gui/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp modello/personale.cpp modello/sociale.cpp modello/visitamedica.cpp modello/attivitafactory.cpp modello/jsonrepo.cpp modello/attivita_table.cpp gui/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h modello/personale.h modello/sociale.h modello/visitamedica.h modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h modello/attivitavisitor.h modello/gestioneattivita_observer.h modello/attivita_table.h gui/mainwindow.h gui/attivitaform.h gui/compilaformvisitor.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp modello/personale.cpp modello/sociale.cpp modello/visitamedica.cpp modello/attivitafactory.cpp modello/jsonrepo.cpp modello/attivita_table.cpp gui/mainwindow.cpp gui/attivitaform.cpp gui/compilaformvisitor.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -468,9 +478,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_attivita_table.cpp moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_attivita_table.cpp moc_mainwindow.cpp moc_attivitaform.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_attivita_table.cpp moc_mainwindow.cpp
+	-$(DEL_FILE) moc_attivita_table.cpp moc_mainwindow.cpp moc_attivitaform.cpp
 moc_attivita_table.cpp: modello/attivita_table.h \
 		modello/gestioneattivita.h \
 		modello/gestioneattivita_observer.h \
@@ -481,14 +491,42 @@ moc_attivita_table.cpp: modello/attivita_table.h \
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/student/workspace/moc_predefs.h -I/usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/student/workspace -I/home/student/workspace -I/usr/include/aarch64-linux-gnu/qt6 -I/usr/include/aarch64-linux-gnu/qt6/QtWidgets -I/usr/include/aarch64-linux-gnu/qt6/QtGui -I/usr/include/aarch64-linux-gnu/qt6/QtCore -I/usr/include/c++/13 -I/usr/include/aarch64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/aarch64-linux-gnu/13/include -I/usr/local/include -I/usr/include/aarch64-linux-gnu -I/usr/include modello/attivita_table.h -o moc_attivita_table.cpp
 
 moc_mainwindow.cpp: gui/mainwindow.h \
+		gui/attivitaform.h \
+		modello/attivita.h \
+		modello/attivitavisitor.h \
+		gui/compilaformvisitor.h \
+		gui/lavorouifactory.h \
+		modello/lavoro.h \
+		gui/attivitauifactory.h \
+		gui/personaleuifactory.h \
+		modello/personale.h \
+		gui/socialeuifactory.h \
+		modello/sociale.h \
+		gui/visitamedicauifactory.h \
+		modello/visitamedica.h \
 		modello/gestioneattivita_observer.h \
 		modello/attivita_table.h \
 		modello/gestioneattivita.h \
-		modello/attivita.h \
-		modello/attivitavisitor.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/student/workspace/moc_predefs.h -I/usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/student/workspace -I/home/student/workspace -I/usr/include/aarch64-linux-gnu/qt6 -I/usr/include/aarch64-linux-gnu/qt6/QtWidgets -I/usr/include/aarch64-linux-gnu/qt6/QtGui -I/usr/include/aarch64-linux-gnu/qt6/QtCore -I/usr/include/c++/13 -I/usr/include/aarch64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/aarch64-linux-gnu/13/include -I/usr/local/include -I/usr/include/aarch64-linux-gnu -I/usr/include gui/mainwindow.h -o moc_mainwindow.cpp
+
+moc_attivitaform.cpp: gui/attivitaform.h \
+		modello/attivita.h \
+		modello/attivitavisitor.h \
+		gui/compilaformvisitor.h \
+		gui/lavorouifactory.h \
+		modello/lavoro.h \
+		gui/attivitauifactory.h \
+		gui/personaleuifactory.h \
+		modello/personale.h \
+		gui/socialeuifactory.h \
+		modello/sociale.h \
+		gui/visitamedicauifactory.h \
+		modello/visitamedica.h \
+		moc_predefs.h \
+		/usr/lib/qt6/libexec/moc
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/student/workspace/moc_predefs.h -I/usr/lib/aarch64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/student/workspace -I/home/student/workspace -I/usr/include/aarch64-linux-gnu/qt6 -I/usr/include/aarch64-linux-gnu/qt6/QtWidgets -I/usr/include/aarch64-linux-gnu/qt6/QtGui -I/usr/include/aarch64-linux-gnu/qt6/QtCore -I/usr/include/c++/13 -I/usr/include/aarch64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/aarch64-linux-gnu/13/include -I/usr/local/include -I/usr/include/aarch64-linux-gnu -I/usr/include gui/attivitaform.h -o moc_attivitaform.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -507,11 +545,22 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 ####### Compile
 
 main.o: main.cpp gui/mainwindow.h \
+		gui/attivitaform.h \
+		modello/attivita.h \
+		modello/attivitavisitor.h \
+		gui/compilaformvisitor.h \
+		gui/lavorouifactory.h \
+		modello/lavoro.h \
+		gui/attivitauifactory.h \
+		gui/personaleuifactory.h \
+		modello/personale.h \
+		gui/socialeuifactory.h \
+		modello/sociale.h \
+		gui/visitamedicauifactory.h \
+		modello/visitamedica.h \
 		modello/gestioneattivita_observer.h \
 		modello/attivita_table.h \
-		modello/gestioneattivita.h \
-		modello/attivita.h \
-		modello/attivitavisitor.h
+		modello/gestioneattivita.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 attivita.o: modello/attivita.cpp modello/attivita.h \
@@ -572,20 +621,63 @@ attivita_table.o: modello/attivita_table.cpp modello/attivita_table.h \
 		modello/attivitavisitor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attivita_table.o modello/attivita_table.cpp
 
-mainwindow.o: gui/mainwindow.cpp gui/mainwindow.h \
-		modello/gestioneattivita_observer.h \
-		modello/attivita_table.h \
-		modello/gestioneattivita.h \
+mainwindow.o: gui/mainwindow.cpp gui/attivitaform.h \
 		modello/attivita.h \
 		modello/attivitavisitor.h \
-		modello/personale.h
+		gui/compilaformvisitor.h \
+		gui/lavorouifactory.h \
+		modello/lavoro.h \
+		gui/attivitauifactory.h \
+		gui/personaleuifactory.h \
+		modello/personale.h \
+		gui/socialeuifactory.h \
+		modello/sociale.h \
+		gui/visitamedicauifactory.h \
+		modello/visitamedica.h \
+		gui/mainwindow.h \
+		modello/gestioneattivita_observer.h \
+		modello/attivita_table.h \
+		modello/gestioneattivita.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o gui/mainwindow.cpp
+
+attivitaform.o: gui/attivitaform.cpp gui/attivitaform.h \
+		modello/attivita.h \
+		modello/attivitavisitor.h \
+		gui/compilaformvisitor.h \
+		gui/lavorouifactory.h \
+		modello/lavoro.h \
+		gui/attivitauifactory.h \
+		gui/personaleuifactory.h \
+		modello/personale.h \
+		gui/socialeuifactory.h \
+		modello/sociale.h \
+		gui/visitamedicauifactory.h \
+		modello/visitamedica.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attivitaform.o gui/attivitaform.cpp
+
+compilaformvisitor.o: gui/compilaformvisitor.cpp gui/compilaformvisitor.h \
+		modello/attivitavisitor.h \
+		modello/attivita.h \
+		gui/attivitaform.h \
+		gui/lavorouifactory.h \
+		modello/lavoro.h \
+		gui/attivitauifactory.h \
+		gui/personaleuifactory.h \
+		modello/personale.h \
+		gui/socialeuifactory.h \
+		modello/sociale.h \
+		gui/visitamedicauifactory.h \
+		modello/visitamedica.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o compilaformvisitor.o gui/compilaformvisitor.cpp
 
 moc_attivita_table.o: moc_attivita_table.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_attivita_table.o moc_attivita_table.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_attivitaform.o: moc_attivitaform.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_attivitaform.o moc_attivitaform.cpp
 
 ####### Install
 

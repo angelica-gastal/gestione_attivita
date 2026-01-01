@@ -1,8 +1,10 @@
+#include "attivitaform.h"
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
 #include <QTableView>
+#include <QStackedWidget>
 #include "modello/gestioneattivita_observer.h"
 #include "modello/attivita_table.h"
 #include "modello/gestioneattivita.h"
@@ -40,6 +42,8 @@ private:
     GestioneAttivita* repo;
     QTableView* table;
     AttivitaTableModel* tableModel;
+    AttivitaForm* form;
+    QStackedWidget* stack;
 };
 
 #endif

@@ -22,7 +22,9 @@ HEADERS += modello/attivita.h modello/gestioneattivita.h modello/lavoro.h \
            modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h \
            modello/attivitavisitor.h modello/gestioneattivita_observer.h \
            modello/attivita_table.h \
-           gui/mainwindow.h
+           gui/mainwindow.h \
+           gui/attivitaform.h \
+           gui/compilaformvisitor.h
 SOURCES += main.cpp \
            modello/attivita.cpp \
            modello/gestioneattivita.cpp \
@@ -33,4 +35,6 @@ SOURCES += main.cpp \
            modello/attivitafactory.cpp \
            modello/jsonrepo.cpp \
            modello/attivita_table.cpp \
-           gui/mainwindow.cpp
+           gui/mainwindow.cpp \
+           gui/attivitaform.cpp \
+           gui/compilaformvisitor.cpp
