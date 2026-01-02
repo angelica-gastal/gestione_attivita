@@ -16,11 +16,13 @@ public:
     void salvaComefile();
 
     QString currentFilePath() const { return m_currentFilePath; }
+    bool isLoading() const { return m_isLoading; }
 
 private:
     GestioneAttivita* m_repo;
     QWidget* m_parent;
     QString m_currentFilePath;
+    bool m_isLoading = false;
 };
 
 #endif // FILEMANAGER_H

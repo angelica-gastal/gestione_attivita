@@ -73,7 +73,7 @@ std::vector<std::unique_ptr<Attivita>> JsonRepo::carica() {
 void JsonRepo::salva(const std::vector<std::unique_ptr<Attivita>>& data) {
     QJsonArray arr;
 
-    for (auto& a : data) {
+    for (const auto& a : data) {
         QJsonObject obj;
         obj["tipo"] = a->tipo();
         obj["titolo"] = a->titolo();
@@ -104,6 +104,8 @@ void JsonRepo::salva(const std::vector<std::unique_ptr<Attivita>>& data) {
 
     QJsonDocument doc(arr);
     QFile f(m_path);
-    if (f.open(QIODevice::WriteOnly))
+    if (f.open(QIODevice::WriteOnly)) {
         f.write(doc.toJson());
+        f.close();
+    }
 }

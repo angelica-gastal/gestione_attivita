@@ -152,14 +152,26 @@ void MainWindow::onExit() { qApp->quit(); }
 
 void MainWindow::onAttivitaAggiunta() {
     statusBar()->showMessage("Attività aggiunta", 2000);
+    // Salvataggio automatico se il file è già stato aperto e non stiamo caricando
+    if (!fileManager->currentFilePath().isEmpty() && !fileManager->isLoading()) {
+        fileManager->salvaFile();
+    }
 }
 
 void MainWindow::onAttivitaRimossa() {
     statusBar()->showMessage("Attività rimossa", 2000);
+    // Salvataggio automatico se il file è già stato aperto e non stiamo caricando
+    if (!fileManager->currentFilePath().isEmpty() && !fileManager->isLoading()) {
+        fileManager->salvaFile();
+    }
 }
 
 void MainWindow::onAttivitaModificata() {
     statusBar()->showMessage("Attività modificata", 2000);
+    // Salvataggio automatico se il file è già stato aperto e non stiamo caricando
+    if (!fileManager->currentFilePath().isEmpty() && !fileManager->isLoading()) {
+        fileManager->salvaFile();
+    }
 }
 
 void MainWindow::onDatiCaricati() {

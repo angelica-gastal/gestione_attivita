@@ -14,10 +14,11 @@ void FileManager::nuovoFile() {
     if (ret != QMessageBox::Yes)
         return;
 
+    // Cancella il path PRIMA di rimuovere le attività per evitare salvataggi automatici
+    m_currentFilePath.clear();
+    
     while (m_repo->numeroAttivita() > 0)
         m_repo->rimuovi(0);
-
-    m_currentFilePath.clear();
 }
 
 void FileManager::apriFile() {
@@ -28,10 +29,15 @@ void FileManager::apriFile() {
 
     JsonRepo jsonRepo(path);
     try {
-        m_repo->carica(jsonRepo);
+        // Imposta prima il nuovo percorso per evitare salvataggi sul file sbagliato
         m_currentFilePath = path;
+        m_isLoading = true;
+        m_repo->carica(jsonRepo);
+        m_isLoading = false;
     } catch (...) {
+        m_isLoading = false;
         QMessageBox::critical(m_parent, "Errore", "Impossibile caricare il file.");
+        m_currentFilePath.clear();
     }
 }
 
@@ -41,7 +47,14 @@ void FileManager::salvaFile() {
         return;
     }
 
-    JsonRepo jsonRepo(m_currentFilePath);
+    // Assicurati che il file abbia estensione .json
+    QString filePath = m_currentFilePath;
+    if (!filePath.endsWith(".json", Qt::CaseInsensitive)) {
+        filePath += ".json";
+        m_currentFilePath = filePath;
+    }
+
+    JsonRepo jsonRepo(filePath);
     try {
         m_repo->salva(jsonRepo);
     } catch (...) {
@@ -54,6 +67,11 @@ void FileManager::salvaComefile() {
         "File JSON (*.json);;Tutti i file (*)");
     if (path.isEmpty())
         return;
+
+    // Assicurati che il file abbia estensione .json
+    if (!path.endsWith(".json", Qt::CaseInsensitive)) {
+        path += ".json";
+    }
 
     m_currentFilePath = path;
     salvaFile();
