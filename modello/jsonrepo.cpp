@@ -60,7 +60,7 @@ std::vector<std::unique_ptr<Attivita>> JsonRepo::carica() {
             QString conChi = obj["conChi"].toString();
             result.push_back( AttivitaFactory::creaSociale(titolo, descrizione, data, ora, luogo, conChi) );
         }
-        else if (tipo == "Visita Medica") {
+        else if (tipo == "VisitaMedica") {
             QString medico = obj["medico"].toString();
             QString tipoVisita = obj["tipoVisita"].toString();
             result.push_back( AttivitaFactory::creaVisitaMedica(titolo, descrizione, data, ora, medico, tipoVisita) );

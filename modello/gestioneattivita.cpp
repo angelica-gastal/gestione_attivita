@@ -17,6 +17,13 @@ void GestioneAttivita::rimuovi(int indice) {
     }
 }
 
+void GestioneAttivita::aggiorna(int indice, std::unique_ptr<Attivita> attivita) {
+    if (indice >= 0 && indice < static_cast<int>(m_attivita.size()) && attivita) {
+        m_attivita[indice] = std::move(attivita);
+        notificaOsservatori(&GestioneAttivitaObserver::onAttivitaModificata);
+    }
+}
+
 Attivita* GestioneAttivita::attivita(int indice) const {
     if (indice >= 0 && indice < static_cast<int>(m_attivita.size()))
         return m_attivita[indice].get();
@@ -34,10 +41,6 @@ void GestioneAttivita::carica(InterfacciaRepo& repo) {
 
 void GestioneAttivita::salva(InterfacciaRepo& repo) const {
     repo.salva(m_attivita);
-}
-
-void GestioneAttivita::segnalaModifica() {
-    notificaOsservatori(&GestioneAttivitaObserver::onAttivitaModificata);
 }
 
 void GestioneAttivita::osservatore(GestioneAttivitaObserver* observer) {

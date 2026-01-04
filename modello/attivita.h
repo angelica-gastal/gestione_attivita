@@ -20,9 +20,6 @@ public:
     QDate data() const;
     QTime ora() const;
 
-    void setTitolo(const QString& t);
-    void setDescrizione(const QString& d);
-
     virtual QString tipo() const = 0;
     virtual void accept(AttivitaVisitor* v) = 0;
 

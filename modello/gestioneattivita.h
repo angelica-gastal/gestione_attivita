@@ -21,11 +21,10 @@ public:
 
     int numeroAttivita() const;
 
+    void aggiorna(int indice, std::unique_ptr<Attivita> attivita);
+
     void carica(InterfacciaRepo& repo);
     void salva(InterfacciaRepo& repo) const;
-
-    // Notifica modifiche effettuate sulle attività esistenti (es. edit in-place)
-    void segnalaModifica();
 
     // Observer pattern methods
     void osservatore(GestioneAttivitaObserver* observer);

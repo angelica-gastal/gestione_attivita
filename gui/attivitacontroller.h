@@ -10,6 +10,7 @@ class AttivitaForm;
 class PannelloDettagli;
 class QWidget;
 class QStatusBar;
+class QSortFilterProxyModel;
 
 class AttivitaController : public QObject {
     Q_OBJECT
@@ -21,6 +22,7 @@ public:
                        QWidget* mainPage,
                        PannelloDettagli* pannello,
                        QStatusBar* statusBar,
+                       QSortFilterProxyModel* proxyModel,
                        QObject* parent = nullptr);
 
 public slots:
@@ -37,6 +39,7 @@ private:
     QWidget* m_mainPage;
     PannelloDettagli* m_pannello;
     QStatusBar* m_statusBar;
+    QSortFilterProxyModel* m_proxyModel;
 };
 
 #endif // ATTIVITACONTROLLER_H

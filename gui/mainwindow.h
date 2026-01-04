@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QTableView>
 #include <QStackedWidget>
+#include <QSortFilterProxyModel>
 #include "modello/gestioneattivita_observer.h"
 #include "modello/attivita_table.h"
 #include "modello/gestioneattivita.h"
@@ -35,6 +36,7 @@ private slots:
     void onSaveFile();
     void onSaveAsFile();
     void onExit();
+    void onSearchTextChanged(const QString& text);
 private:
     void createMainPage();
 
@@ -42,6 +44,7 @@ private:
     GestioneAttivita* repo;
     QTableView* table;
     AttivitaTableModel* tableModel;
+    QSortFilterProxyModel* proxyModel;
     AttivitaForm* form;
     QStackedWidget* stack;
     QWidget* mainPage;

@@ -28,11 +28,3 @@ QDate Attivita::data() const {
 QTime Attivita::ora() const {
     return m_ora;
 }
-
-void Attivita::setTitolo(const QString& t) {
-    m_titolo = t;
-}
-
-void Attivita::setDescrizione(const QString& d) {
-    m_descrizione = d;
-}

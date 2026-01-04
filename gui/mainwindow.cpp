@@ -20,6 +20,8 @@
 #include <QStackedWidget>
 #include <QMessageBox>
 #include <QSplitter>
+#include <QLineEdit>
+#include <QLabel>
 
 #include "modello/gestioneattivita.h"
 #include "modello/attivita.h"
@@ -33,8 +35,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Tabella + model Qt
     tableModel = new AttivitaTableModel(repo, this);
+    
+    // Proxy model per la ricerca e ordinamento
+    proxyModel = new QSortFilterProxyModel(this);
+    proxyModel->setSourceModel(tableModel);
+    proxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    proxyModel->setFilterKeyColumn(-1); // Cerca in tutte le colonne
+    
     table = new QTableView(this);
-    table->setModel(tableModel);
+    table->setModel(proxyModel);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->horizontalHeader()->setStretchLastSection(false);
@@ -64,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
     menuToolbarManager->createToolbar();
 
     attivitaController = new AttivitaController(repo, table, stack, form, mainPage, 
-                                                 pannelloDettagli, statusBar(), this);
+                                                 pannelloDettagli, statusBar(), proxyModel, this);
 
     // Collegamenti menu/toolbar -> file operations
     connect(menuToolbarManager, &MenuToolbarManager::newFileRequested, this, &MainWindow::onNewFile);
@@ -80,9 +89,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(menuToolbarManager, &MenuToolbarManager::viewAttivitaRequested, attivitaController, &AttivitaController::onViewAttivita);
 
     // Form signals
-    connect(form, &AttivitaForm::saved, this, [this](Attivita* obj, int /*index*/) {
+    connect(form, &AttivitaForm::saved, this, [this](Attivita* obj, int index) {
         std::unique_ptr<Attivita> ptr(obj);
-        repo->aggiungi(std::move(ptr));
+        if (index >= 0) {
+            // Modifica di un'attività esistente
+            repo->aggiorna(index, std::move(ptr));
+        } else {
+            // Creazione di una nuova attività
+            repo->aggiungi(std::move(ptr));
+        }
         stack->setCurrentWidget(mainPage);
     });
     connect(form, &AttivitaForm::cancelled, this, [this]{
@@ -92,7 +107,9 @@ MainWindow::MainWindow(QWidget *parent)
     // Table interactions
     connect(table, &QTableView::doubleClicked, attivitaController, &AttivitaController::onViewAttivita);
     connect(table->selectionModel(), &QItemSelectionModel::currentChanged, this, [this](const QModelIndex& current){
-        pannelloDettagli->mostraDettagli(current.isValid() ? repo->attivita(current.row()) : nullptr);
+        // Convertire l'indice del proxy model all'indice del modello sorgente
+        int sourceRow = proxyModel->mapToSource(current).row();
+        pannelloDettagli->mostraDettagli(sourceRow >= 0 ? repo->attivita(sourceRow) : nullptr);
     });
 
     setWindowTitle("Gestione Attività");
@@ -107,8 +124,21 @@ MainWindow::~MainWindow() {
 
 void MainWindow::createMainPage() {
     mainPage = new QWidget(this);
-    QHBoxLayout* h = new QHBoxLayout(mainPage);
+    QVBoxLayout* mainLayout = new QVBoxLayout(mainPage);
 
+    // Barra di ricerca
+    QHBoxLayout* searchLayout = new QHBoxLayout();
+    QLabel* searchLabel = new QLabel("Cerca:", this);
+    QLineEdit* searchEdit = new QLineEdit(this);
+    searchEdit->setPlaceholderText("Digita per cercare attività...");
+    searchLayout->addWidget(searchLabel);
+    searchLayout->addWidget(searchEdit);
+    mainLayout->addLayout(searchLayout);
+
+    // Connessione per la ricerca
+    connect(searchEdit, &QLineEdit::textChanged, this, &MainWindow::onSearchTextChanged);
+
+    // Splitter con tabella e dettagli
     QSplitter* splitter = new QSplitter(mainPage);
     splitter->setOrientation(Qt::Horizontal);
 
@@ -120,8 +150,8 @@ void MainWindow::createMainPage() {
     splitter->setStretchFactor(0, 3);
     splitter->setStretchFactor(1, 2);
 
-    h->addWidget(splitter);
-    mainPage->setLayout(h);
+    mainLayout->addWidget(splitter);
+    mainPage->setLayout(mainLayout);
 }
 
 // ---- SLOT -----
@@ -176,4 +206,10 @@ void MainWindow::onAttivitaModificata() {
 
 void MainWindow::onDatiCaricati() {
     statusBar()->showMessage("Dati caricati", 2000);
+}
+
+void MainWindow::onSearchTextChanged(const QString& text) {
+    if (proxyModel) {
+        proxyModel->setFilterWildcard(text);
+    }
 }
