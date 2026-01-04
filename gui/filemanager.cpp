@@ -14,7 +14,6 @@ void FileManager::nuovoFile() {
     if (ret != QMessageBox::Yes)
         return;
 
-    // Cancella il path PRIMA di rimuovere le attività per evitare salvataggi automatici
     m_currentFilePath.clear();
     
     while (m_repo->numeroAttivita() > 0)
@@ -29,7 +28,6 @@ void FileManager::apriFile() {
 
     JsonRepo jsonRepo(path);
     try {
-        // Imposta prima il nuovo percorso per evitare salvataggi sul file sbagliato
         m_currentFilePath = path;
         m_isLoading = true;
         m_repo->carica(jsonRepo);
@@ -47,7 +45,6 @@ void FileManager::salvaFile() {
         return;
     }
 
-    // Assicurati che il file abbia estensione .json
     QString filePath = m_currentFilePath;
     if (!filePath.endsWith(".json", Qt::CaseInsensitive)) {
         filePath += ".json";
@@ -68,7 +65,6 @@ void FileManager::salvaComefile() {
     if (path.isEmpty())
         return;
 
-    // Assicurati che il file abbia estensione .json
     if (!path.endsWith(".json", Qt::CaseInsensitive)) {
         path += ".json";
     }

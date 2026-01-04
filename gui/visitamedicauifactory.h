@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include "modello/visitamedica.h"
 
+// Factory concreta per costruire l'interfaccia specifica di VisitaMedica
 class VisitaMedicaUIFactory : public AttivitaUIFactory {
 public:
     VisitaMedicaUIFactory() : medicoEdit(nullptr), tipoVisitaEdit(nullptr) {}

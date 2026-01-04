@@ -7,6 +7,7 @@
 #include "attivitauifactory.h"
 #include "modello/sociale.h"
 
+// Factory concreta per costruire l'interfaccia specifica di Sociale
 class SocialeUIFactory : public AttivitaUIFactory {
 public:
     SocialeUIFactory() : luogoEdit(nullptr), conChiEdit(nullptr) {}

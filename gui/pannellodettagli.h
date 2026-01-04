@@ -6,6 +6,8 @@
 
 class Attivita;
 
+// Pannello laterale che mostra i dettagli dell'attività selezionata
+// Usa DettaglioAttivitaVisitor
 class PannelloDettagli : public QWidget {
     Q_OBJECT
 public:
@@ -22,4 +24,4 @@ private:
     QLabel* specificLabel;
 };
 
-#endif // PANNELLODETTAGLI_H
+#endif

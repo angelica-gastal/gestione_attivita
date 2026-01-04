@@ -7,6 +7,7 @@
 #include "attivitauifactory.h"
 #include "modello/lavoro.h"
 
+// Factory concreta per costruire l'interfaccia specifica di Lavoro
 class LavoroUIFactory : public AttivitaUIFactory {
 public:
     LavoroUIFactory() : prioritaCombo(nullptr) {}

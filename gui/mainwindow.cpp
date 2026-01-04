@@ -30,18 +30,18 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    // Modello logico
+    // ===== MODELLO LOGICO =====
+    // Crea l'oggetto centrale che gestisce tutte le attività
     repo = new GestioneAttivita();
 
-    // Tabella + model Qt
+    // ===== TABELLA CON PROXY MODEL =====
     tableModel = new AttivitaTableModel(repo, this);
-    
-    // Proxy model per la ricerca e ordinamento
     proxyModel = new QSortFilterProxyModel(this);
     proxyModel->setSourceModel(tableModel);
     proxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
     proxyModel->setFilterKeyColumn(-1); // Cerca in tutte le colonne
     
+    // Configura la vista tabella
     table = new QTableView(this);
     table->setModel(proxyModel);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -52,12 +52,15 @@ MainWindow::MainWindow(QWidget *parent)
     table->setColumnWidth(2, 180);
     table->setColumnWidth(3, 115);
 
+    // ===== OBSERVER E FILE MANAGER =====
     repo->osservatore(this);
-
+    
     fileManager = new FileManager(repo, this);
 
+    // ===== COSTRUZIONE INTERFACCIA =====
     createMainPage();
 
+    // Stack widget per navigare tra pagina principale e form
     stack = new QStackedWidget(this);
     stack->addWidget(mainPage);
 
@@ -67,15 +70,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     setCentralWidget(stack);
 
-    // Controllers
+    // ===== MENU, TOOLBAR E CONTROLLER =====
     menuToolbarManager = new MenuToolbarManager(this);
     menuToolbarManager->createMenus();
     menuToolbarManager->createToolbar();
 
+    // Controller che gestisce le operazioni CRUD sulle attività
     attivitaController = new AttivitaController(repo, table, stack, form, mainPage, 
                                                  pannelloDettagli, statusBar(), proxyModel, this);
 
-    // Collegamenti menu/toolbar -> file operations
+    // ===== COLLEGAMENTO SEGNALI-SLOT =====
     connect(menuToolbarManager, &MenuToolbarManager::newFileRequested, this, &MainWindow::onNewFile);
     connect(menuToolbarManager, &MenuToolbarManager::openFileRequested, this, &MainWindow::onOpenFile);
     connect(menuToolbarManager, &MenuToolbarManager::saveFileRequested, this, &MainWindow::onSaveFile);
@@ -88,14 +92,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(menuToolbarManager, &MenuToolbarManager::deleteAttivitaRequested, attivitaController, &AttivitaController::onDeleteAttivita);
     connect(menuToolbarManager, &MenuToolbarManager::viewAttivitaRequested, attivitaController, &AttivitaController::onViewAttivita);
 
-    // Form signals
+    // Collega i segnali del form al modello
     connect(form, &AttivitaForm::saved, this, [this](Attivita* obj, int index) {
         std::unique_ptr<Attivita> ptr(obj);
         if (index >= 0) {
-            // Modifica di un'attività esistente
             repo->aggiorna(index, std::move(ptr));
         } else {
-            // Creazione di una nuova attività
             repo->aggiungi(std::move(ptr));
         }
         stack->setCurrentWidget(mainPage);
@@ -104,10 +106,11 @@ MainWindow::MainWindow(QWidget *parent)
         stack->setCurrentWidget(mainPage);
     });
 
-    // Table interactions
+    // Collega le interazioni della tabella (doppio click e selezione)
     connect(table, &QTableView::doubleClicked, attivitaController, &AttivitaController::onViewAttivita);
     connect(table->selectionModel(), &QItemSelectionModel::currentChanged, this, [this](const QModelIndex& current){
-        // Convertire l'indice del proxy model all'indice del modello sorgente
+        // Quando cambia la selezione, mostra i dettagli nel pannello laterale
+        // Usa mapToSource per convertire indice visivo → indice modello reale
         int sourceRow = proxyModel->mapToSource(current).row();
         pannelloDettagli->mostraDettagli(sourceRow >= 0 ? repo->attivita(sourceRow) : nullptr);
     });
@@ -122,11 +125,11 @@ MainWindow::~MainWindow() {
     delete repo;
 }
 
+// Costruisce il layout principale con barra ricerca, tabella e pannello dettagli
 void MainWindow::createMainPage() {
     mainPage = new QWidget(this);
     QVBoxLayout* mainLayout = new QVBoxLayout(mainPage);
 
-    // Barra di ricerca
     QHBoxLayout* searchLayout = new QHBoxLayout();
     QLabel* searchLabel = new QLabel("Cerca:", this);
     QLineEdit* searchEdit = new QLineEdit(this);
@@ -135,10 +138,8 @@ void MainWindow::createMainPage() {
     searchLayout->addWidget(searchEdit);
     mainLayout->addLayout(searchLayout);
 
-    // Connessione per la ricerca
     connect(searchEdit, &QLineEdit::textChanged, this, &MainWindow::onSearchTextChanged);
 
-    // Splitter con tabella e dettagli
     QSplitter* splitter = new QSplitter(mainPage);
     splitter->setOrientation(Qt::Horizontal);
 
@@ -154,7 +155,7 @@ void MainWindow::createMainPage() {
     mainPage->setLayout(mainLayout);
 }
 
-// ---- SLOT -----
+// ===== SLOT OPERAZIONI FILE =====
 void MainWindow::onNewFile() {
     fileManager->nuovoFile();
     statusBar()->showMessage("Nuovo file creato", 2000);
@@ -180,9 +181,11 @@ void MainWindow::onSaveAsFile() {
 
 void MainWindow::onExit() { qApp->quit(); }
 
+// ===== METODI OBSERVER =====
+// Implementano GestioneAttivitaObserver per reagire ai cambiamenti del modello, aggiornano la barra di stato e salvano automaticamente
+
 void MainWindow::onAttivitaAggiunta() {
     statusBar()->showMessage("Attività aggiunta", 2000);
-    // Salvataggio automatico se il file è già stato aperto e non stiamo caricando
     if (!fileManager->currentFilePath().isEmpty() && !fileManager->isLoading()) {
         fileManager->salvaFile();
     }
@@ -190,7 +193,6 @@ void MainWindow::onAttivitaAggiunta() {
 
 void MainWindow::onAttivitaRimossa() {
     statusBar()->showMessage("Attività rimossa", 2000);
-    // Salvataggio automatico se il file è già stato aperto e non stiamo caricando
     if (!fileManager->currentFilePath().isEmpty() && !fileManager->isLoading()) {
         fileManager->salvaFile();
     }
@@ -198,7 +200,6 @@ void MainWindow::onAttivitaRimossa() {
 
 void MainWindow::onAttivitaModificata() {
     statusBar()->showMessage("Attività modificata", 2000);
-    // Salvataggio automatico se il file è già stato aperto e non stiamo caricando
     if (!fileManager->currentFilePath().isEmpty() && !fileManager->isLoading()) {
         fileManager->salvaFile();
     }
@@ -208,6 +209,7 @@ void MainWindow::onDatiCaricati() {
     statusBar()->showMessage("Dati caricati", 2000);
 }
 
+// Applica il filtro di ricerca al proxy model mentre l'utente digita
 void MainWindow::onSearchTextChanged(const QString& text) {
     if (proxyModel) {
         proxyModel->setFilterWildcard(text);

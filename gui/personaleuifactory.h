@@ -8,6 +8,7 @@
 #include "attivitauifactory.h"
 #include "modello/personale.h"
 
+// Factory concreta per costruire l'interfaccia specifica di Personale
 class PersonaleUIFactory : public AttivitaUIFactory {
 public:
     PersonaleUIFactory() : categoriaCombo(nullptr), oreSpin(nullptr), minutiSpin(nullptr) {}

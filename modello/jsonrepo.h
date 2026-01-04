@@ -4,6 +4,8 @@
 #include "interfaccia_repo.h"
 #include <QString>
 
+// Implementazione del Repository pattern per JSON
+// Carica e salva attività da/in file JSON
 class JsonRepo : public InterfacciaRepo {
 public:
     explicit JsonRepo(const QString& path);

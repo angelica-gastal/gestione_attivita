@@ -6,6 +6,7 @@
 class QMainWindow;
 class QAction;
 
+// Gestisce la creazione di menu e toolbar della finestra principale
 class MenuToolbarManager : public QObject {
     Q_OBJECT
 public:
@@ -29,4 +30,4 @@ private:
     QMainWindow* m_mainWindow;
 };
 
-#endif // MENUTOOLBARMANAGER_H
+#endif 

@@ -12,6 +12,8 @@ class QWidget;
 class QStatusBar;
 class QSortFilterProxyModel;
 
+// Controller delle operazioni CRUD sulle attività
+// Collega le azioni dell'utente alle operazioni sul modello e gestisce la navigazione tra form e vista principale
 class AttivitaController : public QObject {
     Q_OBJECT
 public:
@@ -42,4 +44,4 @@ private:
     QSortFilterProxyModel* m_proxyModel;
 };
 
-#endif // ATTIVITACONTROLLER_H
+#endif 

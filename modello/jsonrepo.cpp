@@ -30,6 +30,7 @@ std::vector<std::unique_ptr<Attivita>> JsonRepo::carica() {
     std::vector<std::unique_ptr<Attivita>> result;
     QJsonArray arr = doc.array();
 
+    // Itera su ogni elemento JSON
     for (auto val : arr) {
         if (!val.isObject())
             continue;
@@ -37,14 +38,17 @@ std::vector<std::unique_ptr<Attivita>> JsonRepo::carica() {
         QJsonObject obj = val.toObject();
         QString tipo = obj["tipo"].toString();
 
+        // Carica campi comuni a tutti i tipi
         QString titolo = obj["titolo"].toString();
         QString descrizione = obj["descrizione"].toString();
         QDate data = QDate::fromString(obj["data"].toString(), "yyyy-MM-dd");
         QTime ora = QTime::fromString(obj["ora"].toString(), "HH:mm");
 
+        // Salta gli elementi con dati non validi
         if (!data.isValid() || !ora.isValid())
             continue;
 
+        // Crea l'oggetto giusto in base al tipo, caricando i campi specifici
         if (tipo == "Lavoro") {
             auto p = static_cast<Lavoro::Priorita>(obj["priorita"].toInt());
             result.push_back( AttivitaFactory::creaLavoro(titolo, descrizione, data, ora, p) );
@@ -73,6 +77,7 @@ std::vector<std::unique_ptr<Attivita>> JsonRepo::carica() {
 void JsonRepo::salva(const std::vector<std::unique_ptr<Attivita>>& data) {
     QJsonArray arr;
 
+    // Itera su tutti gli oggetti per serializzarli in JSON
     for (const auto& a : data) {
         QJsonObject obj;
         obj["tipo"] = a->tipo();
@@ -81,7 +86,7 @@ void JsonRepo::salva(const std::vector<std::unique_ptr<Attivita>>& data) {
         obj["data"] = a->data().toString("yyyy-MM-dd");
         obj["ora"] = a->ora().toString("HH:mm");
 
-        // Cast in base al tipo concreto
+        // Salva i campi specifici in base al tipo tramite cast dinamico
         if (auto l = dynamic_cast<Lavoro*>(a.get())) {
             obj["priorita"] = static_cast<int>(l->priorita());
         }
@@ -102,6 +107,7 @@ void JsonRepo::salva(const std::vector<std::unique_ptr<Attivita>>& data) {
         arr.append(obj);
     }
 
+    // Scrive l'array JSON nel file
     QJsonDocument doc(arr);
     QFile f(m_path);
     if (f.open(QIODevice::WriteOnly)) {

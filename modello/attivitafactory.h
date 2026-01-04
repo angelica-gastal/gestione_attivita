@@ -12,6 +12,7 @@
 
 class Attivita;
 
+// Factory per la creazione di attività
 class AttivitaFactory {
 public:
     static std::unique_ptr<Attivita> creaLavoro(

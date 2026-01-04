@@ -1,0 +1,183 @@
+[
+    {
+        "data": "2026-01-05",
+        "descrizione": "Aggiungere sistema login con JWT",
+        "ora": "09:00",
+        "priorita": 0,
+        "tipo": "Lavoro",
+        "titolo": "Implementazione feature autenticazione"
+    },
+    {
+        "data": "2026-01-06",
+        "descrizione": "Revisione pull request team",
+        "ora": "14:30",
+        "priorita": 1,
+        "tipo": "Lavoro",
+        "titolo": "Code review progetto X"
+    },
+    {
+        "data": "2026-01-07",
+        "descrizione": "Presentazione risultati Q4",
+        "ora": "10:00",
+        "priorita": 0,
+        "tipo": "Lavoro",
+        "titolo": "Riunione con stakeholder"
+    },
+    {
+        "data": "2026-01-08",
+        "descrizione": "Risolvere timeout connessioni DB",
+        "ora": "16:00",
+        "priorita": 2,
+        "tipo": "Lavoro",
+        "titolo": "Bug fix database connection"
+    },
+    {
+        "data": "2026-01-31",
+        "descrizione": "Scrivere swagger documentation",
+        "ora": "11:00",
+        "priorita": 1,
+        "tipo": "Lavoro",
+        "titolo": "Documentazione "
+    },
+    {
+        "categoria": 2,
+        "data": "2026-01-05",
+        "descrizione": "Allenamento in palestra",
+        "minuti": 30,
+        "ora": "18:30",
+        "ore": 1,
+        "tipo": "Personale",
+        "titolo": "Palestra - petto e tricipiti"
+    },
+    {
+        "categoria": 0,
+        "data": "2026-01-06",
+        "descrizione": "Negozio biologico centro",
+        "minuti": 45,
+        "ora": "17:00",
+        "ore": 0,
+        "tipo": "Personale",
+        "titolo": "Spesa alimentari"
+    },
+    {
+        "categoria": 1,
+        "data": "2026-01-07",
+        "descrizione": "Lezione con maestro privato",
+        "minuti": 0,
+        "ora": "19:30",
+        "ore": 1,
+        "tipo": "Personale",
+        "titolo": "Lezione chitarra"
+    },
+    {
+        "categoria": 0,
+        "data": "2026-01-11",
+        "descrizione": "Pulizia generale appartamento",
+        "minuti": 0,
+        "ora": "10:00",
+        "ore": 2,
+        "tipo": "Personale",
+        "titolo": "Pulizie casa"
+    },
+    {
+        "categoria": 2,
+        "data": "2026-01-09",
+        "descrizione": "Allenamento 5km parco",
+        "minuti": 40,
+        "ora": "07:00",
+        "ore": 0,
+        "tipo": "Personale",
+        "titolo": "Corsa mattutina"
+    },
+    {
+        "categoria": 1,
+        "data": "2026-01-12",
+        "descrizione": "Continuare lettura Clean Code",
+        "minuti": 30,
+        "ora": "20:00",
+        "ore": 1,
+        "tipo": "Personale",
+        "titolo": "Lettura libro"
+    },
+    {
+        "conChi": "Marco, Anna, Luca",
+        "data": "2026-01-10",
+        "descrizione": "Uscita team building",
+        "luogo": "Bar Centro",
+        "ora": "18:00",
+        "tipo": "Sociale",
+        "titolo": "Aperitivo con colleghi"
+    },
+    {
+        "conChi": "Giulio, Sara, Davide",
+        "data": "2026-01-11",
+        "descrizione": "Riunione universitari",
+        "luogo": "Ristorante La Piazza",
+        "ora": "20:30",
+        "tipo": "Sociale",
+        "titolo": "Cena con vecchi amici"
+    },
+    {
+        "conChi": "Famiglia",
+        "data": "2026-01-12",
+        "descrizione": "Giornata all'aria aperta",
+        "luogo": "Lago di Como",
+        "ora": "14:00",
+        "tipo": "Sociale",
+        "titolo": "Passeggiata al lago"
+    },
+    {
+        "conChi": "Andrea",
+        "data": "2026-01-13",
+        "descrizione": "Vedere film d'azione",
+        "luogo": "Cineplex Downtown",
+        "ora": "21:00",
+        "tipo": "Sociale",
+        "titolo": "Cinema nuovo film"
+    },
+    {
+        "conChi": "Valentina, Chiara",
+        "data": "2026-01-12",
+        "descrizione": "Colazione con amiche",
+        "luogo": "Cafe Centrale",
+        "ora": "11:00",
+        "tipo": "Sociale",
+        "titolo": "Brunch domenicale"
+    },
+    {
+        "data": "2026-01-13",
+        "descrizione": "Planning sprint 13",
+        "ora": "09:30",
+        "priorita": 1,
+        "tipo": "Lavoro",
+        "titolo": "Riunione sprint planning"
+    },
+    {
+        "data": "2026-01-14",
+        "descrizione": "Release v2.5 live",
+        "ora": "19:00",
+        "priorita": 0,
+        "tipo": "Lavoro",
+        "titolo": "Deployment in produzione"
+    },
+    {
+        "categoria": 0,
+        "data": "2026-01-09",
+        "descrizione": "Controllo denti e detartro",
+        "minuti": 30,
+        "ora": "15:30",
+        "ore": 0,
+        "tipo": "Personale",
+        "titolo": "Visita dentista"
+    },
+    {
+        "categoria": 2,
+        "data": "2026-01-08",
+        "descrizione": "Lezione yoga mattutina",
+        "minuti": 0,
+        "ora": "07:00",
+        "ore": 1,
+        "tipo": "Personale",
+        "titolo": "Yoga e meditazione"
+    }
+]

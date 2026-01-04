@@ -7,6 +7,8 @@
 
 class AttivitaForm;
 
+// Visitor che popola il form con i dati di un'attività esistente
+// Usato in modalità modifica per caricare i valori nei widget appropriati
 class CompilaFormVisitor : public AttivitaVisitor {
 public:
     CompilaFormVisitor(AttivitaForm* form);

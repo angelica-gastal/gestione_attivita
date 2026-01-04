@@ -42,7 +42,6 @@ void AttivitaController::onEditAttivita() {
         return;
     }
 
-    // Convertire l'indice del proxy model all'indice del modello sorgente
     int sourceRow = m_proxyModel->mapToSource(idx).row();
     if (sourceRow < 0) {
         m_statusBar->showMessage("Errore nella selezione", 2000);
@@ -61,7 +60,6 @@ void AttivitaController::onDeleteAttivita() {
         return;
     }
     
-    // Convertire l'indice del proxy model all'indice del modello sorgente
     int sourceRow = m_proxyModel->mapToSource(idx).row();
     if (sourceRow < 0) {
         m_statusBar->showMessage("Errore nella selezione", 2000);
@@ -82,7 +80,7 @@ void AttivitaController::onViewAttivita() {
         return;
     }
     
-    // Convertire l'indice del proxy model all'indice del modello sorgente
+    // Convertire l'indice visivo in quello reale
     int sourceRow = m_proxyModel->mapToSource(idx).row();
     if (sourceRow >= 0) {
         m_pannello->mostraDettagli(m_repo->attivita(sourceRow));

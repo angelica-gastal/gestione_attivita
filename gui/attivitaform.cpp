@@ -58,6 +58,7 @@ void AttivitaForm::onTipoChanged(int) {
     buildSpecificUI(tipoCombo->currentText());
 }
 
+// Raccoglie i dati dal form e li salva tramite la factory appropriata
 void AttivitaForm::onSaveClicked() {
     const QString tipo = tipoCombo->currentText();
     const QString titolo = titoloEdit->text();
@@ -86,6 +87,7 @@ void AttivitaForm::loadForCreate() {
     buildSpecificUI(tipoCombo->currentText());
 }
 
+// Carica i dati di un'attività esistente usando il visitor pattern
 void AttivitaForm::loadForEdit(int index, Attivita* existing) {
     editingIndex = index;
     if (!existing) return;
@@ -94,6 +96,7 @@ void AttivitaForm::loadForEdit(int index, Attivita* existing) {
     existing->accept(&visitor);
 }
 
+// Costruisce l'interfaccia specifica tramite la factory appropriata
 void AttivitaForm::buildSpecificUI(QString tipo) {
     if (tipo == "Lavoro") {
         lavoroFactory = std::make_unique<LavoroUIFactory>();
@@ -116,6 +119,7 @@ void AttivitaForm::buildSpecificUI(QString tipo) {
     }
 }
 
+// Rimuove tutti i widget specifici dal container dinamico
 void AttivitaForm::clearSpecificUI() {
     QLayoutItem* item = nullptr;
     while ((item = specificLayout->takeAt(0)) != nullptr) {

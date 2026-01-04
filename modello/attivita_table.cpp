@@ -17,7 +17,7 @@ int AttivitaTableModel::rowCount(const QModelIndex&) const {
 }
 
 int AttivitaTableModel::columnCount(const QModelIndex&) const {
-    return 4; // Tipo, Titolo, Data, Ora
+    return 4; 
 }
 
 QVariant AttivitaTableModel::data(const QModelIndex& index, int role) const {

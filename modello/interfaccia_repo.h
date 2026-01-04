@@ -6,14 +6,15 @@
 
 class Attivita;
 
+// Repository pattern: astrae la persistenza dei dati 
 class InterfacciaRepo {
 public:
     virtual ~InterfacciaRepo() = default;
 
-    /// Carica attività dal file restituisce vettore pronto a sostituire quello in memoria
+    // Carica attività dalla sorgente dati
     virtual std::vector<std::unique_ptr<Attivita>> carica() = 0;
 
-    /// Salva attività nel file
+    // Salva attività nella sorgente dati
     virtual void salva(const std::vector<std::unique_ptr<Attivita>>& data) = 0;
 };
 

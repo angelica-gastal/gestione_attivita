@@ -20,6 +20,9 @@
 #include "socialeuifactory.h"
 #include "visitamedicauifactory.h"
 
+// Form polimorfo per creare/modificare attività
+// Cambia dinamicamente i campi specifici in base al tipo di attività selezionato
+// Utilizza factory per costruire l'interfaccia specifica e visitor per caricare i dati
 class AttivitaForm : public QWidget {
     Q_OBJECT
     friend class CompilaFormVisitor;
@@ -34,27 +37,23 @@ signals:
     void cancelled();
 
 private slots:
-    void onTipoChanged(int idx);
-    void onSaveClicked();
-    void onCancelClicked();
+    void onTipoChanged(int idx);   // Ricostruisce i campi specifici quando cambia il tipo
+    void onSaveClicked();          
+    void onCancelClicked();        
 
 private:
-    void clearSpecificUI();
-    void buildSpecificUI(QString tipo);
+    void clearSpecificUI();              // Rimuove i widget specifici dal form
+    void buildSpecificUI(QString tipo);  // Costruisce i widget specifici tramite factory
 
-    // widget base comuni
+    
     QLineEdit* titoloEdit;
     QTextEdit* descEdit;
     QDateEdit* dataEdit;
     QTimeEdit* oraEdit;
     QComboBox* tipoCombo;
-
-    QWidget* specificContainer;   // layout dinamico
-    QVBoxLayout* specificLayout;  // dentro specificContainer
-
+    QWidget* specificContainer;   
+    QVBoxLayout* specificLayout;  
     AttivitaUIFactory* activeFactory = nullptr;
-
-    // Factory per i campi specifici
     std::unique_ptr<LavoroUIFactory> lavoroFactory;
     std::unique_ptr<PersonaleUIFactory> personaleFactory;
     std::unique_ptr<SocialeUIFactory> socialeFactory;
@@ -63,4 +62,4 @@ private:
     int editingIndex = -1;
 };
 
-#endif // ATTIVITAFORM_H
+#endif

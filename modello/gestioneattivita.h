@@ -21,16 +21,21 @@ public:
 
     int numeroAttivita() const;
 
+    // Aggiorna un'attività esistente all'indice specificato
     void aggiorna(int indice, std::unique_ptr<Attivita> attivita);
 
+    // Carica le attività dal repository sostituendo i dati attuali
     void carica(InterfacciaRepo& repo);
+    // Salva le attività attuali nel repository
     void salva(InterfacciaRepo& repo) const;
 
-    // Observer pattern methods
+    // Registra un osservatore per ricevere notifiche di cambiamenti 
     void osservatore(GestioneAttivitaObserver* observer);
+    // Rimuove un osservatore dalle notifiche
     void rimuoviOsservatore(GestioneAttivitaObserver* observer);
 
 private:
+    // Notifica tutti gli osservatori registrati con il metodo specificato
     void notificaOsservatori(void (GestioneAttivitaObserver::*)());
 
 private:

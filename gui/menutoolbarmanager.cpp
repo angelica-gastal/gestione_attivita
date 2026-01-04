@@ -17,6 +17,13 @@ void MenuToolbarManager::createMenus() {
     fileMenu->addSeparator();
     QAction *exitAct = fileMenu->addAction("Esci");
 
+    // shortcut da tastiera ai menu File
+    newAct->setShortcut(QKeySequence::New);           // Ctrl+N
+    openAct->setShortcut(QKeySequence::Open);         // Ctrl+O
+    saveAct->setShortcut(QKeySequence::Save);         // Ctrl+S
+    saveAsAct->setShortcut(QKeySequence::SaveAs);     // Ctrl+Shift+S
+    exitAct->setShortcut(QKeySequence::Quit);         // Ctrl+Q
+
     connect(newAct, &QAction::triggered, this, &MenuToolbarManager::newFileRequested);
     connect(openAct, &QAction::triggered, this, &MenuToolbarManager::openFileRequested);
     connect(saveAct, &QAction::triggered, this, &MenuToolbarManager::saveFileRequested);
@@ -28,6 +35,12 @@ void MenuToolbarManager::createMenus() {
     QAction *editAtt = attivitaMenu->addAction("Modifica");
     QAction *deleteAtt = attivitaMenu->addAction("Elimina");
     QAction *viewAtt = attivitaMenu->addAction("Dettagli");
+
+    //shortcut da tastiera al menu Attività
+    newAtt->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_N);  // Ctrl+Shift+N
+    editAtt->setShortcut(Qt::CTRL | Qt::Key_E);              // Ctrl+E
+    deleteAtt->setShortcut(Qt::Key_Delete);                  // Delete
+    viewAtt->setShortcut(Qt::CTRL | Qt::Key_I);              // Ctrl+I 
 
     connect(newAtt, &QAction::triggered, this, &MenuToolbarManager::newAttivitaRequested);
     connect(editAtt, &QAction::triggered, this, &MenuToolbarManager::editAttivitaRequested);

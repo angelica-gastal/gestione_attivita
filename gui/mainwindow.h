@@ -16,6 +16,9 @@ class PannelloDettagli;
 class MenuToolbarManager;
 class AttivitaController;
 
+// Finestra principale dell'applicazione
+// Gestisce layout, menu, toolbar e coordina i vari componenti (tabella, form, dettagli)
+// Implementa Observer per reagire ai cambiamenti nel modello
 class MainWindow : public QMainWindow, public GestioneAttivitaObserver
 {
     Q_OBJECT
@@ -23,7 +26,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    // Observer methods
     void onAttivitaAggiunta() override;
     void onAttivitaRimossa() override;
     void onAttivitaModificata() override;
