@@ -41,6 +41,7 @@ private slots:
     void onSearchTextChanged(const QString& text);
 private:
     void createMainPage();
+    void clearSelectionAndDetails();
 
 private:
     GestioneAttivita* repo;

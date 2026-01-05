@@ -12,6 +12,7 @@
 #include <QJsonObject>
 #include <QDate>
 #include <QTime>
+#include <stdexcept>
 
 JsonRepo::JsonRepo(const QString& path)
     : m_path(path) {}
@@ -19,13 +20,19 @@ JsonRepo::JsonRepo(const QString& path)
 std::vector<std::unique_ptr<Attivita>> JsonRepo::carica() {
     QFile f(m_path);
     if (!f.open(QIODevice::ReadOnly))
-        return {};
+        throw std::runtime_error("Impossibile aprire il file");
 
-    QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
+    QByteArray data = f.readAll();
     f.close();
 
+    QJsonParseError parseError;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &parseError);
+    
+    if (doc.isNull() || parseError.error != QJsonParseError::NoError)
+        throw std::runtime_error("File JSON corrotto o non valido");
+
     if (!doc.isArray())
-        return {};
+        throw std::runtime_error("Il file JSON non contiene un array");
 
     std::vector<std::unique_ptr<Attivita>> result;
     QJsonArray arr = doc.array();

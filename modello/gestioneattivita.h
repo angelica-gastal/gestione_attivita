@@ -37,6 +37,8 @@ public:
 private:
     // Notifica tutti gli osservatori registrati con il metodo specificato
     void notificaOsservatori(void (GestioneAttivitaObserver::*)());
+    // Ordina le attività per data e ora per garantire l'ordine cronologico
+    void ordinaCronologicamente();
 
 private:
     std::vector<std::unique_ptr<Attivita>> m_attivita;

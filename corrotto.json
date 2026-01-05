@@ -1,0 +1,25 @@
+[
+    {
+        "data": "2026-01-04",
+        "descrizione": "test",
+        "ora": "21:20",
+        "priorita": 1,
+        "tipo": "Lavoro",
+        "titolo": "nonn"
+    },
+    {
+        "data": "2026-01-04",
+        MALFORMATO: non è una proprietà valida,
+        "ora": "21:20",
+        "tipo": "VisitaMedica",
+        "titolo": "ooo"
+    },
+    {
+        "data": "invalid-date",
+        "descrizione": "gggggg",
+        "luogo": "se5stdr",
+        "ora": "not-a-time",
+        "tipo": "Sociale",
+        "titolo": "oo"
+    }
+]

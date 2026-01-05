@@ -22,6 +22,8 @@
 #include <QSplitter>
 #include <QLineEdit>
 #include <QLabel>
+#include <QShortcut>
+#include <QModelIndex>
 
 #include "modello/gestioneattivita.h"
 #include "modello/attivita.h"
@@ -90,7 +92,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(menuToolbarManager, &MenuToolbarManager::newAttivitaRequested, attivitaController, &AttivitaController::onNewAttivita);
     connect(menuToolbarManager, &MenuToolbarManager::editAttivitaRequested, attivitaController, &AttivitaController::onEditAttivita);
     connect(menuToolbarManager, &MenuToolbarManager::deleteAttivitaRequested, attivitaController, &AttivitaController::onDeleteAttivita);
-    connect(menuToolbarManager, &MenuToolbarManager::viewAttivitaRequested, attivitaController, &AttivitaController::onViewAttivita);
 
     // Collega i segnali del form al modello
     connect(form, &AttivitaForm::saved, this, [this](Attivita* obj, int index) {
@@ -109,7 +110,12 @@ MainWindow::MainWindow(QWidget *parent)
     // Collega le interazioni della tabella (doppio click e selezione)
     connect(table, &QTableView::doubleClicked, attivitaController, &AttivitaController::onViewAttivita);
     connect(table->selectionModel(), &QItemSelectionModel::currentChanged, this, [this](const QModelIndex& current){
-        // Quando cambia la selezione, mostra i dettagli nel pannello laterale
+        // Quando la selezione diventa vuota, pulisci i dettagli
+        if (!current.isValid()) {
+            pannelloDettagli->pulisci();
+            return;
+        }
+
         // Usa mapToSource per convertire indice visivo → indice modello reale
         int sourceRow = proxyModel->mapToSource(current).row();
         pannelloDettagli->mostraDettagli(sourceRow >= 0 ? repo->attivita(sourceRow) : nullptr);
@@ -155,16 +161,31 @@ void MainWindow::createMainPage() {
     mainPage->setLayout(mainLayout);
 }
 
+void MainWindow::clearSelectionAndDetails() {
+    if (table && table->selectionModel()) {
+        table->selectionModel()->clearSelection();
+        table->setCurrentIndex(QModelIndex());
+    }
+
+    if (pannelloDettagli) {
+        pannelloDettagli->pulisci();
+    }
+}
+
 // ===== SLOT OPERAZIONI FILE =====
 void MainWindow::onNewFile() {
-    fileManager->nuovoFile();
-    statusBar()->showMessage("Nuovo file creato", 2000);
+    if (fileManager->nuovoFile()) {
+        clearSelectionAndDetails();
+        statusBar()->showMessage("Nuovo file creato", 2000);
+    }
 }
 
 void MainWindow::onOpenFile() {
     fileManager->apriFile();
-    if (!fileManager->currentFilePath().isEmpty())
+    if (!fileManager->currentFilePath().isEmpty()) {
+        clearSelectionAndDetails();
         statusBar()->showMessage("File caricato: " + fileManager->currentFilePath(), 3000);
+    }
 }
 
 void MainWindow::onSaveFile() {
@@ -196,6 +217,10 @@ void MainWindow::onAttivitaRimossa() {
     if (!fileManager->currentFilePath().isEmpty() && !fileManager->isLoading()) {
         fileManager->salvaFile();
     }
+
+    if (repo && repo->numeroAttivita() == 0) {
+        clearSelectionAndDetails();
+    }
 }
 
 void MainWindow::onAttivitaModificata() {
@@ -207,6 +232,7 @@ void MainWindow::onAttivitaModificata() {
 
 void MainWindow::onDatiCaricati() {
     statusBar()->showMessage("Dati caricati", 2000);
+    clearSelectionAndDetails();
 }
 
 // Applica il filtro di ricerca al proxy model mentre l'utente digita

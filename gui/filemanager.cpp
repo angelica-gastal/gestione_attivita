@@ -8,16 +8,18 @@
 FileManager::FileManager(GestioneAttivita* repo, QWidget* parent)
     : m_repo(repo), m_parent(parent) {}
 
-void FileManager::nuovoFile() {
+bool FileManager::nuovoFile() {
     auto ret = QMessageBox::question(m_parent, "Nuovo file", 
         "Creare un nuovo file? I dati non salvati andranno persi.");
     if (ret != QMessageBox::Yes)
-        return;
+        return false;
 
     m_currentFilePath.clear();
     
     while (m_repo->numeroAttivita() > 0)
         m_repo->rimuovi(0);
+
+    return true;
 }
 
 void FileManager::apriFile() {

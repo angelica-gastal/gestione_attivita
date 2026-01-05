@@ -12,7 +12,7 @@ class FileManager {
 public:
     explicit FileManager(GestioneAttivita* repo, QWidget* parent);
 
-    void nuovoFile();
+    bool nuovoFile();
     void apriFile();
     void salvaFile();
     void salvaComefile();

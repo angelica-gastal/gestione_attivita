@@ -2,10 +2,12 @@
 #include "attivita.h"
 #include "interfaccia_repo.h"
 #include "gestioneattivita_observer.h"
+#include <algorithm>
 
 void GestioneAttivita::aggiungi(std::unique_ptr<Attivita> attivita) {
     if (attivita) {
         m_attivita.push_back(std::move(attivita));
+        ordinaCronologicamente();
         notificaOsservatori(&GestioneAttivitaObserver::onAttivitaAggiunta);
     }
 }
@@ -20,6 +22,7 @@ void GestioneAttivita::rimuovi(int indice) {
 void GestioneAttivita::aggiorna(int indice, std::unique_ptr<Attivita> attivita) {
     if (indice >= 0 && indice < static_cast<int>(m_attivita.size()) && attivita) {
         m_attivita[indice] = std::move(attivita);
+        ordinaCronologicamente();
         notificaOsservatori(&GestioneAttivitaObserver::onAttivitaModificata);
     }
 }
@@ -36,6 +39,7 @@ int GestioneAttivita::numeroAttivita() const {
 
 void GestioneAttivita::carica(InterfacciaRepo& repo) {
     m_attivita = repo.carica();
+    ordinaCronologicamente();
     notificaOsservatori(&GestioneAttivitaObserver::onDatiCaricati);
 }
 
@@ -56,4 +60,16 @@ void GestioneAttivita::notificaOsservatori(void (GestioneAttivitaObserver::*meto
     for (auto observer : m_osservatori) {
         (observer->*metodo)();
     }
+}
+
+void GestioneAttivita::ordinaCronologicamente() {
+    std::sort(m_attivita.begin(), m_attivita.end(), [](const std::unique_ptr<Attivita>& a, const std::unique_ptr<Attivita>& b) {
+        if (!a || !b)
+            return false;
+
+        if (a->data() == b->data())
+            return a->ora() < b->ora();
+
+        return a->data() < b->data();
+    });
 }

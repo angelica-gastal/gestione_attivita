@@ -4,6 +4,7 @@
 #include <QToolBar>
 #include <QAction>
 #include <QMenu>
+#include <QKeySequence>
 
 MenuToolbarManager::MenuToolbarManager(QMainWindow* mainWindow)
     : QObject(mainWindow), m_mainWindow(mainWindow) {}
@@ -24,6 +25,18 @@ void MenuToolbarManager::createMenus() {
     saveAsAct->setShortcut(QKeySequence::SaveAs);     // Ctrl+Shift+S
     exitAct->setShortcut(QKeySequence::Quit);         // Ctrl+Q
 
+    newAct->setShortcutContext(Qt::ApplicationShortcut);
+    openAct->setShortcutContext(Qt::ApplicationShortcut);
+    saveAct->setShortcutContext(Qt::ApplicationShortcut);
+    saveAsAct->setShortcutContext(Qt::ApplicationShortcut);
+    exitAct->setShortcutContext(Qt::ApplicationShortcut);
+
+    m_mainWindow->addAction(newAct);
+    m_mainWindow->addAction(openAct);
+    m_mainWindow->addAction(saveAct);
+    m_mainWindow->addAction(saveAsAct);
+    m_mainWindow->addAction(exitAct);
+
     connect(newAct, &QAction::triggered, this, &MenuToolbarManager::newFileRequested);
     connect(openAct, &QAction::triggered, this, &MenuToolbarManager::openFileRequested);
     connect(saveAct, &QAction::triggered, this, &MenuToolbarManager::saveFileRequested);
@@ -34,18 +47,20 @@ void MenuToolbarManager::createMenus() {
     QAction *newAtt = attivitaMenu->addAction("Nuova");
     QAction *editAtt = attivitaMenu->addAction("Modifica");
     QAction *deleteAtt = attivitaMenu->addAction("Elimina");
-    QAction *viewAtt = attivitaMenu->addAction("Dettagli");
 
     //shortcut da tastiera al menu Attività
     newAtt->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_N);  // Ctrl+Shift+N
     editAtt->setShortcut(Qt::CTRL | Qt::Key_E);              // Ctrl+E
-    deleteAtt->setShortcut(Qt::Key_Delete);                  // Delete
-    viewAtt->setShortcut(Qt::CTRL | Qt::Key_I);              // Ctrl+I 
+
+    newAtt->setShortcutContext(Qt::ApplicationShortcut);
+    editAtt->setShortcutContext(Qt::ApplicationShortcut);
+
+    m_mainWindow->addAction(newAtt);
+    m_mainWindow->addAction(editAtt);
 
     connect(newAtt, &QAction::triggered, this, &MenuToolbarManager::newAttivitaRequested);
     connect(editAtt, &QAction::triggered, this, &MenuToolbarManager::editAttivitaRequested);
     connect(deleteAtt, &QAction::triggered, this, &MenuToolbarManager::deleteAttivitaRequested);
-    connect(viewAtt, &QAction::triggered, this, &MenuToolbarManager::viewAttivitaRequested);
 }
 
 void MenuToolbarManager::createToolbar() {
@@ -54,18 +69,15 @@ void MenuToolbarManager::createToolbar() {
     QAction *openAct = new QAction("Apri");
     QAction *saveAct = new QAction("Salva");
     QAction *newAtt = new QAction("Nuova Attività");
-    QAction *viewAtt = new QAction("Dettagli");
 
     tb->addAction(newAct);
     tb->addAction(openAct);
     tb->addAction(saveAct);
     tb->addSeparator();
     tb->addAction(newAtt);
-    tb->addAction(viewAtt);
 
     connect(newAct, &QAction::triggered, this, &MenuToolbarManager::newFileRequested);
     connect(openAct, &QAction::triggered, this, &MenuToolbarManager::openFileRequested);
     connect(saveAct, &QAction::triggered, this, &MenuToolbarManager::saveFileRequested);
     connect(newAtt, &QAction::triggered, this, &MenuToolbarManager::newAttivitaRequested);
-    connect(viewAtt, &QAction::triggered, this, &MenuToolbarManager::viewAttivitaRequested);
 }

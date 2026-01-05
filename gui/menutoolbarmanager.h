@@ -24,7 +24,6 @@ signals:
     void newAttivitaRequested();
     void editAttivitaRequested();
     void deleteAttivitaRequested();
-    void viewAttivitaRequested();
 
 private:
     QMainWindow* m_mainWindow;
