@@ -4,6 +4,8 @@
 
 #include <QVBoxLayout>
 #include <QFont>
+#include <QPushButton>
+#include <QHBoxLayout>
 
 PannelloDettagli::PannelloDettagli(QWidget* parent) : QWidget(parent) {
     QVBoxLayout* layout = new QVBoxLayout(this);
@@ -23,6 +25,8 @@ PannelloDettagli::PannelloDettagli(QWidget* parent) : QWidget(parent) {
     tipoLabel = new QLabel(this);
     specificLabel = new QLabel(this);
     specificLabel->setWordWrap(true);
+    editButton = new QPushButton("Modifica", this);
+    deleteButton = new QPushButton("Elimina", this);
 
     layout->addWidget(makeLabel("Titolo"));
     layout->addWidget(titoloLabel);
@@ -34,9 +38,18 @@ PannelloDettagli::PannelloDettagli(QWidget* parent) : QWidget(parent) {
     layout->addWidget(tipoLabel);
     layout->addWidget(makeLabel("Dettagli specifici"));
     layout->addWidget(specificLabel);
+
+    QHBoxLayout* buttonsLayout = new QHBoxLayout();
+    buttonsLayout->addStretch();
+    buttonsLayout->addWidget(editButton);
+    buttonsLayout->addWidget(deleteButton);
+    layout->addLayout(buttonsLayout);
     layout->addStretch();
 
     setLayout(layout);
+
+    connect(editButton, &QPushButton::clicked, this, &PannelloDettagli::editRequested);
+    connect(deleteButton, &QPushButton::clicked, this, &PannelloDettagli::deleteRequested);
     pulisci();
 }
 
@@ -54,6 +67,9 @@ void PannelloDettagli::mostraDettagli(Attivita* att) {
     dataOraLabel->setText(att->data().toString("dd/MM/yyyy") + " " + att->ora().toString("HH:mm"));
     tipoLabel->setText(att->tipo());
     specificLabel->setText(visitor.specific.isEmpty() ? "-" : visitor.specific);
+
+    editButton->setEnabled(true);
+    deleteButton->setEnabled(true);
 }
 
 void PannelloDettagli::pulisci() {
@@ -62,4 +78,6 @@ void PannelloDettagli::pulisci() {
     dataOraLabel->setText("-");
     tipoLabel->setText("-");
     specificLabel->setText("-");
+    if (editButton) editButton->setEnabled(false);
+    if (deleteButton) deleteButton->setEnabled(false);
 }

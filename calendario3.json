@@ -129,15 +129,6 @@
         "titolo": "Brunch domenicale"
     },
     {
-        "conChi": "Famiglia",
-        "data": "2026-01-12",
-        "descrizione": "Giornata all'aria aperta",
-        "luogo": "Lago di Como",
-        "ora": "14:00",
-        "tipo": "Sociale",
-        "titolo": "Passeggiata al lago"
-    },
-    {
         "categoria": 1,
         "data": "2026-01-12",
         "descrizione": "Continuare lettura Clean Code",

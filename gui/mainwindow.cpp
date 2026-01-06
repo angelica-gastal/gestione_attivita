@@ -93,6 +93,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(menuToolbarManager, &MenuToolbarManager::editAttivitaRequested, attivitaController, &AttivitaController::onEditAttivita);
     connect(menuToolbarManager, &MenuToolbarManager::deleteAttivitaRequested, attivitaController, &AttivitaController::onDeleteAttivita);
 
+    // Pulsanti nel pannello dettagli -> operazioni attività
+    connect(pannelloDettagli, &PannelloDettagli::editRequested, attivitaController, &AttivitaController::onEditAttivita);
+    connect(pannelloDettagli, &PannelloDettagli::deleteRequested, attivitaController, &AttivitaController::onDeleteAttivita);
+
     // Collega i segnali del form al modello
     connect(form, &AttivitaForm::saved, this, [this](Attivita* obj, int index) {
         std::unique_ptr<Attivita> ptr(obj);

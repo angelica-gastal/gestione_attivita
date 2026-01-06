@@ -5,6 +5,7 @@
 #include <QLabel>
 
 class Attivita;
+class QPushButton;
 
 // Pannello laterale che mostra i dettagli dell'attività selezionata
 // Usa DettaglioAttivitaVisitor
@@ -16,12 +17,18 @@ public:
     void mostraDettagli(Attivita* att);
     void pulisci();
 
+signals:
+    void editRequested();
+    void deleteRequested();
+
 private:
     QLabel* titoloLabel;
     QLabel* descLabel;
     QLabel* dataOraLabel;
     QLabel* tipoLabel;
     QLabel* specificLabel;
+    QPushButton* editButton;
+    QPushButton* deleteButton;
 };
 
 #endif
