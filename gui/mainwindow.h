@@ -1,11 +1,10 @@
-#include "attivitaform.h"
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
 #include <QTableView>
 #include <QStackedWidget>
-#include <QSortFilterProxyModel>
+#include "filtroproxymodelcombinato.h"
 #include "modello/gestioneattivita_observer.h"
 #include "modello/attivita_table.h"
 #include "modello/gestioneattivita.h"
@@ -47,7 +46,7 @@ private:
     GestioneAttivita* repo;
     QTableView* table;
     AttivitaTableModel* tableModel;
-    QSortFilterProxyModel* proxyModel;
+    FiltroProxyModelCombinato* proxyModel;
     AttivitaForm* form;
     QStackedWidget* stack;
     QWidget* mainPage;

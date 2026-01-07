@@ -22,6 +22,7 @@
 #include <QSplitter>
 #include <QLineEdit>
 #include <QLabel>
+#include <QComboBox>
 #include <QShortcut>
 #include <QModelIndex>
 
@@ -38,10 +39,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // ===== TABELLA CON PROXY MODEL =====
     tableModel = new AttivitaTableModel(repo, this);
-    proxyModel = new QSortFilterProxyModel(this);
+    proxyModel = new FiltroProxyModelCombinato(this);
     proxyModel->setSourceModel(tableModel);
-    proxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    proxyModel->setFilterKeyColumn(-1); // Cerca in tutte le colonne
     
     // Configura la vista tabella
     table = new QTableView(this);
@@ -143,12 +142,29 @@ void MainWindow::createMainPage() {
     QHBoxLayout* searchLayout = new QHBoxLayout();
     QLabel* searchLabel = new QLabel("Cerca:", this);
     QLineEdit* searchEdit = new QLineEdit(this);
+    QLabel* typeLabel = new QLabel("Tipo:", this);
+    QComboBox* typeCombo = new QComboBox(this);
+    typeCombo->addItem("Tutti");
+    typeCombo->addItem("Sociale");
+    typeCombo->addItem("Personale");
+    typeCombo->addItem("Lavoro");
+    typeCombo->addItem("Visita Medica");
     searchEdit->setPlaceholderText("Digita per cercare attività...");
     searchLayout->addWidget(searchLabel);
     searchLayout->addWidget(searchEdit);
+    searchLayout->addSpacing(12);
+    searchLayout->addWidget(typeLabel);
+    searchLayout->addWidget(typeCombo);
     mainLayout->addLayout(searchLayout);
 
-    connect(searchEdit, &QLineEdit::textChanged, this, &MainWindow::onSearchTextChanged);
+    connect(searchEdit, &QLineEdit::textChanged, this, [this](const QString& text){
+        auto* proxy = static_cast<FiltroProxyModelCombinato*>(proxyModel);
+        proxy->setTextFilter(text);
+    });
+    connect(typeCombo, &QComboBox::currentTextChanged, this, [this](const QString& type){
+        auto* proxy = static_cast<FiltroProxyModelCombinato*>(proxyModel);
+        proxy->setTypeFilter(type);
+    });
 
     QSplitter* splitter = new QSplitter(mainPage);
     splitter->setOrientation(Qt::Horizontal);
