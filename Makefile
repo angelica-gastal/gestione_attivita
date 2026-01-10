@@ -69,7 +69,8 @@ SOURCES       = main.cpp \
 		gui/filemanager.cpp \
 		gui/pannellodettagli.cpp \
 		gui/menutoolbarmanager.cpp \
-		gui/attivitacontroller.cpp moc_attivita_table.cpp \
+		gui/attivitacontroller.cpp \
+		gui/tema.cpp moc_attivita_table.cpp \
 		moc_mainwindow.cpp \
 		moc_attivitaform.cpp \
 		moc_pannellodettagli.cpp \
@@ -94,6 +95,7 @@ OBJECTS       = main.o \
 		pannellodettagli.o \
 		menutoolbarmanager.o \
 		attivitacontroller.o \
+		tema.o \
 		moc_attivita_table.o \
 		moc_mainwindow.o \
 		moc_attivitaform.o \
@@ -221,7 +223,8 @@ DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		gui/pannellodettagli.h \
 		gui/menutoolbarmanager.h \
 		gui/attivitacontroller.h \
-		gui/filtroproxymodelcombinato.h main.cpp \
+		gui/filtroproxymodelcombinato.h \
+		gui/tema.h main.cpp \
 		modello/attivita.cpp \
 		modello/gestioneattivita.cpp \
 		modello/lavoro.cpp \
@@ -238,7 +241,8 @@ DIST          = /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		gui/filemanager.cpp \
 		gui/pannellodettagli.cpp \
 		gui/menutoolbarmanager.cpp \
-		gui/attivitacontroller.cpp
+		gui/attivitacontroller.cpp \
+		gui/tema.cpp
 QMAKE_TARGET  = gestione_attivita
 DESTDIR       = 
 TARGET        = gestione_attivita
@@ -474,8 +478,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/aarch64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h modello/personale.h modello/sociale.h modello/visitamedica.h modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h modello/attivitavisitor.h modello/gestioneattivita_observer.h modello/attivita_table.h gui/mainwindow.h gui/attivitaform.h gui/compilaformvisitor.h gui/dettaglioattivitavisitor.h gui/filemanager.h gui/pannellodettagli.h gui/menutoolbarmanager.h gui/attivitacontroller.h gui/filtroproxymodelcombinato.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp modello/personale.cpp modello/sociale.cpp modello/visitamedica.cpp modello/attivitafactory.cpp modello/jsonrepo.cpp modello/attivita_table.cpp gui/mainwindow.cpp gui/attivitaform.cpp gui/compilaformvisitor.cpp gui/dettaglioattivitavisitor.cpp gui/filemanager.cpp gui/pannellodettagli.cpp gui/menutoolbarmanager.cpp gui/attivitacontroller.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents modello/attivita.h modello/gestioneattivita.h modello/lavoro.h modello/personale.h modello/sociale.h modello/visitamedica.h modello/attivitafactory.h modello/interfaccia_repo.h modello/jsonrepo.h modello/attivitavisitor.h modello/gestioneattivita_observer.h modello/attivita_table.h gui/mainwindow.h gui/attivitaform.h gui/compilaformvisitor.h gui/dettaglioattivitavisitor.h gui/filemanager.h gui/pannellodettagli.h gui/menutoolbarmanager.h gui/attivitacontroller.h gui/filtroproxymodelcombinato.h gui/tema.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp modello/attivita.cpp modello/gestioneattivita.cpp modello/lavoro.cpp modello/personale.cpp modello/sociale.cpp modello/visitamedica.cpp modello/attivitafactory.cpp modello/jsonrepo.cpp modello/attivita_table.cpp gui/mainwindow.cpp gui/attivitaform.cpp gui/compilaformvisitor.cpp gui/dettaglioattivitavisitor.cpp gui/filemanager.cpp gui/pannellodettagli.cpp gui/menutoolbarmanager.cpp gui/attivitacontroller.cpp gui/tema.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -589,7 +593,8 @@ main.o: main.cpp gui/mainwindow.h \
 		modello/attivita_table.h \
 		modello/gestioneattivita.h \
 		modello/attivita.h \
-		modello/attivitavisitor.h
+		modello/attivitavisitor.h \
+		gui/tema.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 attivita.o: modello/attivita.cpp modello/attivita.h \
@@ -671,7 +676,8 @@ mainwindow.o: gui/mainwindow.cpp gui/attivitaform.h \
 		gui/filemanager.h \
 		gui/pannellodettagli.h \
 		gui/menutoolbarmanager.h \
-		gui/attivitacontroller.h
+		gui/attivitacontroller.h \
+		gui/tema.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o gui/mainwindow.cpp
 
 attivitaform.o: gui/attivitaform.cpp gui/attivitaform.h \
@@ -745,6 +751,9 @@ attivitacontroller.o: gui/attivitacontroller.cpp gui/attivitacontroller.h \
 		gui/visitamedicauifactory.h \
 		modello/visitamedica.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attivitacontroller.o gui/attivitacontroller.cpp
+
+tema.o: gui/tema.cpp gui/tema.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tema.o gui/tema.cpp
 
 moc_attivita_table.o: moc_attivita_table.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_attivita_table.o moc_attivita_table.cpp

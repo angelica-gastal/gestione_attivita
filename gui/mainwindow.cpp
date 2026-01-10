@@ -25,10 +25,12 @@
 #include <QComboBox>
 #include <QShortcut>
 #include <QModelIndex>
+#include <QTimer>
 
 #include "modello/gestioneattivita.h"
 #include "modello/attivita.h"
 #include "modello/personale.h"
+#include "tema.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -47,11 +49,22 @@ MainWindow::MainWindow(QWidget *parent)
     table->setModel(proxyModel);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
-    table->horizontalHeader()->setStretchLastSection(false);
-    table->setColumnWidth(0, 100);
-    table->setColumnWidth(1, 250);
-    table->setColumnWidth(2, 180);
-    table->setColumnWidth(3, 115);
+    table->setAutoFillBackground(true);
+    table->setWordWrap(false);
+    table->setTextElideMode(Qt::ElideRight);
+    table->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    
+    // Tutte le colonne in Stretch mode con proporzioni 130:260:140:115
+    QHeaderView* header = table->horizontalHeader();
+    header->setStretchLastSection(false);
+    header->setSectionResizeMode(QHeaderView::Stretch);
+    
+    // Imposta larghezze iniziali che definiscono le proporzioni
+    header->resizeSection(0, 130);
+    header->resizeSection(1, 260);
+    header->resizeSection(2, 140);
+    header->resizeSection(3, 115);
 
     // ===== OBSERVER E FILE MANAGER =====
     repo->osservatore(this);
@@ -86,6 +99,18 @@ MainWindow::MainWindow(QWidget *parent)
     connect(menuToolbarManager, &MenuToolbarManager::saveFileRequested, this, &MainWindow::onSaveFile);
     connect(menuToolbarManager, &MenuToolbarManager::saveAsFileRequested, this, &MainWindow::onSaveAsFile);
     connect(menuToolbarManager, &MenuToolbarManager::exitRequested, this, &MainWindow::onExit);
+
+    // Tema: connessioni menu
+    connect(menuToolbarManager, &MenuToolbarManager::temaChiaroRichiesto, this, [this]{
+        TemaUtil::applicaTema(TemaUtil::Tema::Chiaro);
+        TemaUtil::salvaTema(TemaUtil::Tema::Chiaro);
+        statusBar()->showMessage("Tema chiaro applicato", 1500);
+    });
+    connect(menuToolbarManager, &MenuToolbarManager::temaScuroRichiesto, this, [this]{
+        TemaUtil::applicaTema(TemaUtil::Tema::Scuro);
+        TemaUtil::salvaTema(TemaUtil::Tema::Scuro);
+        statusBar()->showMessage("Tema scuro applicato", 1500);
+    });
 
     // Collegamenti menu/toolbar -> attività operations
     connect(menuToolbarManager, &MenuToolbarManager::newAttivitaRequested, attivitaController, &AttivitaController::onNewAttivita);
@@ -127,6 +152,10 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("Gestione Attività");
     resize(900,600);
     statusBar()->showMessage("Pronto");
+
+    // Imposta stato iniziale del menu tema in base alle impostazioni
+    const auto tema = TemaUtil::caricaTema();
+    menuToolbarManager->impostaTemaScuro(tema == TemaUtil::Tema::Scuro);
 }
 
 MainWindow::~MainWindow() {

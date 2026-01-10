@@ -30,7 +30,8 @@ HEADERS += modello/attivita.h modello/gestioneattivita.h modello/lavoro.h \
            gui/pannellodettagli.h \
            gui/menutoolbarmanager.h \
            gui/attivitacontroller.h \
-           gui/filtroproxymodelcombinato.h
+           gui/filtroproxymodelcombinato.h \
+           gui/tema.h
 SOURCES += main.cpp \
            modello/attivita.cpp \
            modello/gestioneattivita.cpp \
@@ -48,4 +49,5 @@ SOURCES += main.cpp \
            gui/filemanager.cpp \
            gui/pannellodettagli.cpp \
            gui/menutoolbarmanager.cpp \
-           gui/attivitacontroller.cpp
+           gui/attivitacontroller.cpp \
+           gui/tema.cpp

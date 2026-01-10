@@ -15,6 +15,9 @@ public:
     void createMenus();
     void createToolbar();
 
+    // Imposta lo stato delle azioni tema (true = scuro)
+    void impostaTemaScuro(bool scuro);
+
 signals:
     void newFileRequested();
     void openFileRequested();
@@ -25,8 +28,14 @@ signals:
     void editAttivitaRequested();
     void deleteAttivitaRequested();
 
+    // Tema
+    void temaChiaroRichiesto();
+    void temaScuroRichiesto();
+
 private:
     QMainWindow* m_mainWindow;
+    QAction* m_azioneTemaChiaro = nullptr;
+    QAction* m_azioneTemaScuro = nullptr;
 };
 
 #endif 

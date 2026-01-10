@@ -5,6 +5,7 @@
 #include <QAction>
 #include <QMenu>
 #include <QKeySequence>
+#include <QActionGroup>
 
 MenuToolbarManager::MenuToolbarManager(QMainWindow* mainWindow)
     : QObject(mainWindow), m_mainWindow(mainWindow) {}
@@ -61,6 +62,27 @@ void MenuToolbarManager::createMenus() {
     connect(newAtt, &QAction::triggered, this, &MenuToolbarManager::newAttivitaRequested);
     connect(editAtt, &QAction::triggered, this, &MenuToolbarManager::editAttivitaRequested);
     connect(deleteAtt, &QAction::triggered, this, &MenuToolbarManager::deleteAttivitaRequested);
+
+    // Menu Aspetto -> Tema
+    QMenu *aspettoMenu = m_mainWindow->menuBar()->addMenu("Aspetto");
+    QMenu *temaMenu = aspettoMenu->addMenu("Tema");
+
+    QActionGroup* gruppoTema = new QActionGroup(this);
+    gruppoTema->setExclusive(true);
+
+    m_azioneTemaChiaro = new QAction("Chiaro", this);
+    m_azioneTemaChiaro->setCheckable(true);
+    m_azioneTemaScuro = new QAction("Scuro", this);
+    m_azioneTemaScuro->setCheckable(true);
+
+    gruppoTema->addAction(m_azioneTemaChiaro);
+    gruppoTema->addAction(m_azioneTemaScuro);
+
+    temaMenu->addAction(m_azioneTemaChiaro);
+    temaMenu->addAction(m_azioneTemaScuro);
+
+    connect(m_azioneTemaChiaro, &QAction::triggered, this, &MenuToolbarManager::temaChiaroRichiesto);
+    connect(m_azioneTemaScuro, &QAction::triggered, this, &MenuToolbarManager::temaScuroRichiesto);
 }
 
 void MenuToolbarManager::createToolbar() {
@@ -80,4 +102,11 @@ void MenuToolbarManager::createToolbar() {
     connect(openAct, &QAction::triggered, this, &MenuToolbarManager::openFileRequested);
     connect(saveAct, &QAction::triggered, this, &MenuToolbarManager::saveFileRequested);
     connect(newAtt, &QAction::triggered, this, &MenuToolbarManager::newAttivitaRequested);
+}
+
+void MenuToolbarManager::impostaTemaScuro(bool scuro) {
+    if (m_azioneTemaChiaro && m_azioneTemaScuro) {
+        m_azioneTemaScuro->setChecked(scuro);
+        m_azioneTemaChiaro->setChecked(!scuro);
+    }
 }
