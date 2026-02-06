@@ -1,0 +1,74 @@
+[
+  {
+    "tipo": "Lavoro",
+    "titolo": "Consegna progetto",
+    "descrizione": "Consegna gestione attivita'",
+    "data": "2026-01-28",
+    "ora": "09:30",
+    "priorita": 0
+  },
+  {
+    "tipo": "Lavoro",
+    "titolo": "Meeting aziendale",
+    "descrizione": "Frase d'esempio",
+    "data": "2026-02-03",
+    "ora": "15:00",
+    "priorita": 1
+  },
+  {
+    "tipo": "Personale",
+    "titolo": "Corso nuoto",
+    "descrizione": "allenamento",
+    "data": "2026-01-08",
+    "ora": "18:45",
+    "categoria": 2,
+    "ore": 1,
+    "minuti": 15
+  },
+  {
+    "tipo": "Personale",
+    "titolo": "Spesa",
+    "descrizione": "Pane, nutella, latte",
+    "data": "2026-01-06",
+    "ora": "17:10",
+    "categoria": 0,
+    "ore": 0,
+    "minuti": 50
+  },
+  {
+    "tipo": "Sociale",
+    "titolo": "Cena con amici",
+    "descrizione": "un po'di vita sociale",
+    "data": "2026-01-14",
+    "ora": "20:00",
+    "luogo": "Esu nord piovego",
+    "conChi": "amici amici amici"
+  },
+  {
+    "tipo": "Sociale",
+    "titolo": "Aperitivo",
+    "descrizione": "post esame",
+    "data": "2026-01-05",
+    "ora": "17:30",
+    "luogo": "Portello",
+    "conChi": "compagni uni"
+  },
+  {
+    "tipo": "VisitaMedica",
+    "titolo": "Controllo annuale",
+    "descrizione": "Esami di routine e visita generale",
+    "data": "2026-02-18",
+    "ora": "11:15",
+    "medico": "Dr. Verdi",
+    "tipoVisita": "Check-up"
+  },
+  {
+    "tipo": "VisitaMedica",
+    "titolo": "Visita oculistica",
+    "descrizione": "Controllo vista e prescrizione",
+    "data": "2026-03-02",
+    "ora": "09:00",
+    "medico": "Dr. Bianchi",
+    "tipoVisita": "Oculistica"
+  }
+]

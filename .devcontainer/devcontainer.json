@@ -1,0 +1,30 @@
+{
+  "name": "Qt6 OOP UNIPD (macOS)",
+  "image": "unipd-oop/qt-env:2025",
+
+  "runArgs": [
+    "--env=DISPLAY=host.docker.internal:0"
+  ],
+
+  "containerEnv": {
+    "QT_X11_NO_MITSHM": "1",
+    "QT_QPA_PLATFORM": "xcb"
+  },
+
+  "remoteUser": "student",
+
+  "workspaceFolder": "/home/student/workspace",
+
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/home/student/workspace,type=bind"
+  ],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools"
+      ]
+    }
+  }
+}

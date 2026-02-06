@@ -1,0 +1,38 @@
+[
+    {
+        "data": "2026-01-05",
+        "descrizione": "Daily standup",
+        "ora": "09:00",
+        "priorita": 1,
+        "tipo": "Lavoro",
+        "titolo": "Riunione team"
+    },
+    {
+        "categoria": 2,
+        "data": "2026-01-06",
+        "descrizione": "Allenamento",
+        "minuti": 30,
+        "ora": "18:00",
+        "ore": 1,
+        "tipo": "Personale",
+        "titolo": "Palestra"
+    },
+    {
+        "conChi": "Marco",
+        "data": "2026-01-07",
+        "descrizione": "",
+        "luogo": "Ai chimici",
+        "ora": "19:30",
+        "tipo": "Sociale",
+        "titolo": "Colazione"
+    },
+    {
+        "data": "2026-01-10",
+        "descrizione": "Pulizia denti.",
+        "medico": "Dr. Rossi",
+        "ora": "14:00",
+        "tipo": "Visita Medica",
+        "tipoVisita": "Odontoiatrica",
+        "titolo": "Dentista"
+    }
+]
